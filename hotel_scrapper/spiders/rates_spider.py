@@ -38,8 +38,7 @@ class RatesSpiderSpider(scrapy.Spider):
         input.send_keys("Maldives")
         submit = self.driver.find_element_by_xpath('//*[@id="indexsearch"]/div[2]/div/form/div[1]/div[4]/button')
         submit.click()
-        while True:
-            print("inside the loop")
+      
 
         # while mx_pages > 0:
         #     mx_pages = mx_pages - 1

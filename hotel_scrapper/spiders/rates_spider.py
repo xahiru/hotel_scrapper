@@ -25,35 +25,43 @@ class RatesSpiderSpider(scrapy.Spider):
     
 
     def __init__(self):
-        self.driver = webdriver.Chrome()
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option("detach", True)
+        self.driver = webdriver.Chrome(options=options)
 
     def parse(self, response):
         self.driver.get(self.start_urls[0])
 
         mx_pages = 20
+        self.driver.implicitly_wait(15)
+        input = self.driver.find_element_by_xpath("//input[@placeholder='Where are you going?']")
+        input.send_keys("Maldives")
+        submit = self.driver.find_element_by_xpath('//*[@id="indexsearch"]/div[2]/div/form/div[1]/div[4]/button')
+        submit.click()
+        while True:
+            print("inside the loop")
 
-        while mx_pages > 0:
-            mx_pages = mx_pages - 1
-            try:
+        # while mx_pages > 0:
+        #     mx_pages = mx_pages - 1
+        #     try:
 
-                print(
-                    '==================================================================inside the loop===============')
-                self.driver.implicitly_wait(15)
-                # print(response.xpath('//button[@aria-label="Next page"]'))
+        #         print(
+        #             '==================================================================inside the loop===============')
+        #         # print(response.xpath('//button[@aria-label="Next page"]'))
 
-                next = self.driver.find_element_by_xpath(
-                    '//button[@aria-label="Next page"]')
-                # print(next)
-                url = self.driver.current_url
-                # print(url)
-                yield scrapy.Request(url, callback=self.parse_hotel)
-                print("page xxxxxx")
-                next.click()
-                # self.driver.implicitly_wait(10)
-            except:
-                print(
-                    '==================================================================failed or end===============')
-                break
+        #         next = self.driver.find_element_by_xpath(
+        #             '//button[@aria-label="Next page"]')
+        #         # print(next)
+        #         url = self.driver.current_url
+        #         # print(url)
+        #         yield scrapy.Request(url, callback=self.parse_hotel)
+        #         print("page xxxxxx")
+        #         next.click()
+        #         # self.driver.implicitly_wait(10)
+        #     except:
+        #         print(
+        #             '==================================================================failed or end===============')
+        #         break
 
         self.driver.close()
 

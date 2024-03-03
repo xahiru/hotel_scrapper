@@ -2,6 +2,8 @@ import scrapy
 from hotel_scrapper.items import HotelItem
 # from scrapy.loader import ItemLoader
 from selenium import webdriver
+from scrapy_selenium import SeleniumRequest
+
 
 
 from datetime import datetime, timedelta

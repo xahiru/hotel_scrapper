@@ -21,7 +21,8 @@ class RatesSpiderSpider(scrapy.Spider):
     allowed_domains = ['www.booking.com']
 
     start_urls = [
-        "https://www.booking.com/searchresults.en-gb.html?ss=Maldives&ssne=&ssne_untouched=&label=gen173nr-1FCAEoggI46AdIM1gEaLQBiAEBmAEJuAEHyAEM2AEB6AEB-AELiAIBqAIDuAKcgfKuBsACAdICJDMzMDk1NWE2LTNlMGMtNDU1Ni1iYmE4LTBmNTZhMjY2NmRhNNgCBuACAQ&sid=d8f692159d780d393c7c6e9ed3d571a6&aid=304142&lang=en-gb&sb=1&src_elem=sb&src=index&dest_id=-2437894&dest_type=city&ac_position=0&ac_click_type=b&ac_langcode=en&ac_suggestion_list_length=5&search_selected=true&search_pageview_id=7853560ee74a00b3&ac_meta=GhA3ODUzNTYwZWU3NGEwMGIzIAAoATICZW46AU1AAEoAUAA%3D&checkin="+checkin+"&checkout="+checkout+"&group_adults=2&no_rooms=1&group_children=0"]
+        f"https://www.booking.com/searchresults.en-gb.html?ss=Maldives&ssne=Maldives&ssne_untouched=Maldives&label=gen173nr-1FCAEoggI46AdIM1gEaLQBiAEBmAEJuAEHyAEM2AEB6AEB-AELiAIBqAIDuAKcgfKuBsACAdICJDMzMDk1NWE2LTNlMGMtNDU1Ni1iYmE4LTBmNTZhMjY2NmRhNNgCBuACAQ&sid=d8f692159d780d393c7c6e9ed3d571a6&aid=304142&lang=en-gb&sb=1&src_elem=sb&src=searchresults&dest_id=129&dest_type=country&ac_position=0&ac_click_type=b&ac_langcode=en&ac_suggestion_list_length=5&search_selected=true&search_pageview_id=bf7c5dbc3b110061&ac_meta=GhBiZjdjNWRiYzNiMTEwMDYxIAAoATICZW46CE1hbGRpdmVzQABKAFAA&checkin={checkin}&checkout={checkout}&group_adults=2&no_rooms=1&group_children=0"
+        ]
     
 
     def __init__(self):
@@ -34,10 +35,15 @@ class RatesSpiderSpider(scrapy.Spider):
 
         mx_pages = 20
         self.driver.implicitly_wait(15)
-        input = self.driver.find_element_by_xpath("//input[@placeholder='Where are you going?']")
-        input.send_keys("Maldives")
-        submit = self.driver.find_element_by_xpath('//*[@id="indexsearch"]/div[2]/div/form/div[1]/div[4]/button')
-        submit.click()
+        # signin = self.driver.find_element_by_xpath("//a[@aria-label='aria-label']")
+        # print("🚀 ~ signin===========>:", signin)
+        # next = self.driver.find_element_by_xpath("//button[@aria-label='Next page']")
+        # next.click()
+        # self.driver.find_element_by_xpath("/html/body/div[3]/div/div/header/nav[1]/div[2]/span[1]/button").click()  
+        # input = self.driver.find_element_by_xpath("//input[@placeholder='Where are you going?']")
+        # input.send_keys("Maldives")
+        # submit = self.driver.find_element_by_xpath('//*[@id="indexsearch"]/div[2]/div/form/div[1]/div[4]/button')
+        # submit.click()
       
 
         # while mx_pages > 0:

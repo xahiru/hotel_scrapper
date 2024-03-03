@@ -1,3 +1,4 @@
+from shutil import which
 # Scrapy settings for hotel_scrapper project
 #
 # For simplicity, this file contains only settings considered important or
@@ -18,6 +19,16 @@ NEWSPIDER_MODULE = "hotel_scrapper.spiders"
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
+
+
+  
+SELENIUM_DRIVER_NAME = 'chrome'
+SELENIUM_DRIVER_EXECUTABLE_PATH = which('chromedriver')
+SELENIUM_DRIVER_ARGUMENTS=['--headless']  
+  
+DOWNLOADER_MIDDLEWARES = {
+     'scrapy_selenium.SeleniumMiddleware': 800
+     }
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32

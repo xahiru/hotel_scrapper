@@ -27,16 +27,21 @@ class RatesSpiderSpider(scrapy.Spider):
         ]
     
 
-    def __init__(self):
-        options = webdriver.ChromeOptions()
-        options.add_experimental_option("detach", True)
-        self.driver = webdriver.Chrome(options=options)
+    # def __init__(self):
+        # options = webdriver.ChromeOptions()
+        # options.add_experimental_option("detach", True)
+        # self.driver = webdriver.Chrome(options=options)
+        # self.driver = webdriver.Chrome()
+    def start_requests(self):
+        yield SeleniumRequest(url=self.start_urls[0], callback=self.parse, wait_time=60)
 
     def parse(self, response):
-        self.driver.get(self.start_urls[0])
+        # self.driver.get(self.start_urls[0])
+        print('==================================================================Passing started===============')
+        print(f'response: {response.extract()}')
 
         mx_pages = 20
-        self.driver.implicitly_wait(15)
+        # self.driver.implicitly_wait(15)
         # signin = self.driver.find_element_by_xpath("//a[@aria-label='aria-label']")
         # print("🚀 ~ signin===========>:", signin)
         # next = self.driver.find_element_by_xpath("//button[@aria-label='Next page']")

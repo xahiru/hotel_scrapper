@@ -103,10 +103,8 @@ class RatesSpiderSpider(scrapy.Spider):
                     url = None
                 
                 url = self.driver.current_url
-                # print(url)
                 # yield scrapy.Request(url, callback=self.parse_hotel)
                 next_button.click()
-                # self.driver.implicitly_wait(10)
             except:
                 print(
                     '==================================================================failed or end===============')

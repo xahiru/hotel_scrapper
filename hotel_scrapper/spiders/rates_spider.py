@@ -4,6 +4,8 @@ from hotel_scrapper.items import HotelItem
 from selenium import webdriver
 from scrapy_selenium import SeleniumRequest
 from selenium.webdriver.common.by import By
+from selenium.webdriver import Keys, ActionChains
+
 
 
 
@@ -34,7 +36,7 @@ class RatesSpiderSpider(scrapy.Spider):
         options.add_experimental_option("detach", True)
         self.driver = webdriver.Chrome(options=options)
    
-    # def start_requests(self):
+    def start_requests(self):
     #     # response = self.driver.get(self.start_urls[0])
     #     # self.driver.implicitly_wait(2)
     #     # xpath='/html/body/div[4]/div/div[2]/div/div[2]/div[3]/div[2]/div[2]/div[4]/div[2]/nav/nav/div/div[2]/ol/li[2]/button'
@@ -44,21 +46,21 @@ class RatesSpiderSpider(scrapy.Spider):
         
         # /html/body/div[4]/div/div[2]/div/div[2]/div[3]/div[2]/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[1]/div/div[1]/div/div[1]
         # self.driver.close()
-        # yield SeleniumRequest(url=url, callback=self.parse, wait_time=60)
-        # yield SeleniumRequest(url=self.start_urls[0], callback=self.parse, wait_time=60)
+        yield SeleniumRequest(url=self.start_urls[0], callback=self.parse_hotel, wait_time=60)
         # yield scrapy.Request(url=self.start_urls[0], callback=self.parse)
 
     def parse(self, response):
-        self.driver.get(self.start_urls[0])
+        # self.driver.get(self.start_urls[0])
         print('==================================================================Passing started===============')
         print(f'response: {response}')
         
         print("🚀 ~ finding next button===========>:")
-        self.driver.implicitly_wait(15)
+        # self.driver.implicitly_wait(15)
         full_xpath_to_next_button_list = '/html/body/div[4]/div/div[2]/div/div[2]/div[3]/div[2]/div[2]/div[4]/div[2]/nav/nav/div/div[2]/ol/li'
-        next_button_list = self.driver.find_element(by=By.XPATH, value=full_xpath_to_next_button_list)
-        print(f'🚀 ~ next_button_list: {next_button_list}')
+        # next_button_list = self.driver.find_element(by=By.XPATH, value=full_xpath_to_next_button_list)
+        # print(f'🚀 ~ next_button_list: {next_button_list}')
         mx_pages = 20
+        # yield SeleniumRequest(url=self.start_urls[0], callback=self.parse, wait_time=60)
         # next = self.driver.find_element_by_xpath("//button[@aria-label='Next page']")
         # next.click()
         # self.driver.find_element_by_xpath("/html/body/div[3]/div/div/header/nav[1]/div[2]/span[1]/button").click()  
@@ -66,6 +68,15 @@ class RatesSpiderSpider(scrapy.Spider):
         # input.send_keys("Maldives")
         # submit = self.driver.find_element_by_xpath('//*[@id="indexsearch"]/div[2]/div/form/div[1]/div[4]/button')
         # submit.click()
+        
+        # ActionChains(self.driver)\
+        # .move_to_element(clickable)\
+        # .pause(1)\
+        # .click_and_hold()\
+        # .pause(1)\
+        # .send_keys("abc")\
+        # .perform()
+
       
 
         # while mx_pages > 0:

@@ -37,9 +37,11 @@ class RatesSpiderSpider(scrapy.Spider):
         self.driver = webdriver.Chrome(options=options)
    
     def start_requests(self):
-        yield scrapy.Request(url=self.start_urls[0], callback=self.parse)
+        yield scrapy.Request(url=self.start_urls[0], callback=self.parse, cb_kwargs={'url': self.start_urls[0]})
 
-    def parse(self, response):
+    def parse(self, response, url):
+        print('🚀 ==================================================================inside parse===============')
+        print("🚀 ~ response:", url)
     # ############################################## GOOD CODE ##############################################
         # self.driver.get(self.start_urls[0])
         # print('==================================================================Passing started===============')
@@ -76,37 +78,29 @@ class RatesSpiderSpider(scrapy.Spider):
         #         print(f'🚀 ~ error: {e}')
     # ############################################## GOOD CODE END ##############################################
 
-        
 
-      
 
-        while mx_pages > 0:
-            mx_pages = mx_pages - 1
+        while url is not None:
+            print('🚀 ==================================================================inside the loop===============')
             try:
-
-                print(
-                    '🚀 ==================================================================inside the loop===============')
-                print(response.xpath('//button[@aria-label="Next page"]'))
-                print(f'🚀 response.url {response.url}')
-                
         
                 print("🚀 ~ finding next button===========>:")
-        
-                self.driver.implicitly_wait(30)
-                # dismiss_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Dismiss sign in information."]')
-                # if dismiss_button:
-                #     dismiss_button.click()
-                
                 self.driver.get(response.url)
+                self.driver.implicitly_wait(30)
+                try:
+                    dismiss_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Dismiss sign in information."]')
+                    if dismiss_button:
+                        dismiss_button.click()
+                except Exception as e:
+                    print("🚀 ~ dismiss_button not found")
+                    pass
+                    
                 next_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Next page"]')
                 # self.driver.implicitly_wait(30)
-                # dismiss_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Dismiss sign in information."]')
-                # if dismiss_button:
-                #     dismiss_button.click()
                 
                 if next_button is None:
                     print('🚀 ~ next_button is None')
-                    break
+                    url = None
                 
                 url = self.driver.current_url
                 # print(url)
@@ -117,7 +111,7 @@ class RatesSpiderSpider(scrapy.Spider):
                 print(
                     '==================================================================failed or end===============')
                 break
-        self.driver.close()
+        # self.driver.close()
 
 
     def parse_hotel(self, response):

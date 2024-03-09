@@ -29,10 +29,10 @@ class RatesSpiderSpider(scrapy.Spider):
         ]
     
     # Selenium
-    # def __init__(self):
-    #     options = webdriver.ChromeOptions()
-    #     options.add_experimental_option("detach", True)
-    #     self.driver = webdriver.Chrome(options=options)
+    def __init__(self):
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option("detach", True)
+        self.driver = webdriver.Chrome(options=options)
    
     # def start_requests(self):
     #     # response = self.driver.get(self.start_urls[0])
@@ -49,14 +49,16 @@ class RatesSpiderSpider(scrapy.Spider):
         # yield scrapy.Request(url=self.start_urls[0], callback=self.parse)
 
     def parse(self, response):
-        # self.driver.get(self.start_urls[0])
+        self.driver.get(self.start_urls[0])
         print('==================================================================Passing started===============')
         print(f'response: {response}')
-
+        
+        print("🚀 ~ finding next button===========>:")
+        self.driver.implicitly_wait(15)
+        full_xpath_to_next_button_list = '/html/body/div[4]/div/div[2]/div/div[2]/div[3]/div[2]/div[2]/div[4]/div[2]/nav/nav/div/div[2]/ol/li'
+        next_button_list = self.driver.find_element(by=By.XPATH, value=full_xpath_to_next_button_list)
+        print(f'🚀 ~ next_button_list: {next_button_list}')
         mx_pages = 20
-        # self.driver.implicitly_wait(15)
-        # signin = self.driver.find_element_by_xpath("//a[@aria-label='aria-label']")
-        # print("🚀 ~ signin===========>:", signin)
         # next = self.driver.find_element_by_xpath("//button[@aria-label='Next page']")
         # next.click()
         # self.driver.find_element_by_xpath("/html/body/div[3]/div/div/header/nav[1]/div[2]/span[1]/button").click()  

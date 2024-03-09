@@ -109,7 +109,7 @@ class RatesSpiderSpider(scrapy.Spider):
                 print(
                     '==================================================================failed or end===============')
                 break
-        # self.driver.close()
+        self.driver.close()
 
 
     def parse_hotel(self, response):

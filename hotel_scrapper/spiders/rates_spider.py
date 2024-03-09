@@ -112,6 +112,7 @@ class RatesSpiderSpider(scrapy.Spider):
                     while load_more_button:
                         print('🚀 ~ load_more_button is found')
                         WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable(load_more_button)).click()
+                        load_more_button = None
                 except NoSuchElementException as e:
                     print("🚀 ~ load_more_button not found")
                     pass
@@ -126,6 +127,7 @@ class RatesSpiderSpider(scrapy.Spider):
                 print("🚀 ~ current url before calling parse:", url)
                 self.parse_new_hotel()
                 self.parse(response, url)
+                url = None
         except:
             print(
                 '==================================================================failed or end===============')
@@ -148,23 +150,33 @@ class RatesSpiderSpider(scrapy.Spider):
                     print(f'🚀 ~ current_property: {current_property.text}')
                     details = current_property.text
                     title = current_property.find_element(by=By.XPATH, value='//div[@data-testid="title"]')
-                    address = current_property.find_element(by=By.XPATH, value='//div[@data-testid="address"]')
+                    title = title.text
+                    try:
+                        address = current_property.find_element(by=By.XPATH, value='//span[@data-testid="address"]')
+                        address = address.text
+                    except NoSuchElementException as e:
+                        print(f'🚀 ~ error: {e}')
+                        address = "none"
                     price = current_property.find_element(by=By.XPATH, value='//div[@data-testid="availability-rate-information"]')
+                    price = price.text
                     squars = current_property.find_element(by=By.XPATH, value='//div[@data-testid="rating-squares"]/..') #./div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/span/div
                     star = current_property.find_element(by=By.XPATH, value='//div[@data-testid="rating-stars"]/..') #./div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/span/div
                     
                     recom_units = current_property.find_element(by=By.XPATH, value='//h4')
+                    recom_units = recom_units.text
             
                     hotel = HotelItem()
 
-                    hotel['name'] = title.text
+                    hotel['name'] = title
                     if star:
-                        hotel['star'] = star.get_attribute('aria-label')
+                        start = star.get_attribute('aria-label')
                     elif squars:
-                        hotel['star'] = squars.get_attribute('aria-label') 
-                    hotel['d_price'] = price.text
-                    hotel['room_type'] = recom_units.text
-                    hotel['original_price'] = address
+                       start = squars.get_attribute('aria-label') 
+                       
+                    hotel['star'] = "star"
+                    hotel['d_price'] = price
+                    hotel['room_type'] = recom_units
+                    hotel['original_price'] = "address"
                     hotel['guest_rating'] = "none"
                     hotel['details'] = details
                     return hotel

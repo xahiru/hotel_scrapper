@@ -176,7 +176,7 @@ class RatesSpiderSpider(scrapy.Spider):
                     elif squars:
                        star = squars.get_attribute('aria-label') 
                        
-                    hotel['star'] = "star"
+                    hotel['star'] = star
                     hotel['d_price'] = price
                     hotel['room_type'] = recom_units
                     hotel['original_price'] = address

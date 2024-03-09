@@ -136,9 +136,30 @@ class RatesSpiderSpider(scrapy.Spider):
                 current_property = property_cards.pop()
                 if current_property:
                     print(f'🚀 ~ current_property: {current_property.text}')
+                    title = current_property.find_element(by=By.XPATH, value='//div[@data-testid="title"]')
+                    address = current_property.find_element(by=By.XPATH, value='//div[@data-testid="address"]')
+                    price = current_property.find_element(by=By.XPATH, value='//div[@data-testid="availability-rate-information"]')
+                    squars = current_property.find_element(by=By.XPATH, value='//div[@data-testid="rating-squares"]/..') #./div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/span/div
+                    star = current_property.find_element(by=By.XPATH, value='//div[@data-testid="rating-stars"]/..') #./div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/span/div
+                    
+                    recom_units = current_property.find_element(by=By.XPATH, value='//h4')
+            
+                    hotel = HotelItem()
+
+                    hotel['name'] = title.text
+                    if star:
+                        hotel['star'] = star.get_attribute('aria-label')
+                    elif squars:
+                        hotel['star'] = squars.get_attribute('aria-label') 
+                    hotel['d_price'] = price.text
+                    hotel['room_type'] = recom_units.text
+                    hotel['original_price'] = address
+                    hotel['guest_rating'] = "none"
+
+                    yield hotel
             except Exception as e:
                 print(f'🚀 ~ error: {e}')
-        pass
+        print('🚀 ==================================================================before looping recursive===============')
 
     def parse_hotel(self, response):
         print('==================================================================Passing started===============')

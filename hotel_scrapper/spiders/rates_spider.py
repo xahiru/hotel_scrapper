@@ -55,7 +55,7 @@ class RatesSpiderSpider(scrapy.Spider):
         print(f'response: {response}')
         
         print("🚀 ~ finding next button===========>:")
-        self.driver.implicitly_wait(15)
+        # self.driver.implicitly_wait()
         # full_xpath_to_next_button_list = '/html/body/div[4]/div/div[2]/div/div[2]/div[3]/div[2]/div[2]/div[4]/div[2]/nav/nav/div/div[2]/ol/li'
         # next_button_list = self.driver.find_element(by=By.XPATH, value=full_xpath_to_next_button_list)
         # print(f'🚀 ~ next_button_list: {next_button_list}')
@@ -66,9 +66,18 @@ class RatesSpiderSpider(scrapy.Spider):
         print("🚀 ~ finding property_card===========>:")
         property_card = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
         print(f'🚀 ~ property_card: {property_card}')
-        for card in property_card:
+        print(f'🚀 ~ property_card.count: {property_card.count}')
+        print(f'🚀 ~ property_card. length: {len(property_card)}')
+        
+        for idx in range(len(property_card)):
             print("🚀 ~ new property===========>:")
-            print(f'🚀 ~ card: {card.text}')
+            try:
+                
+                current_property = property_card.pop()
+                if current_property:
+                    print(f'🚀 ~ current_property: {current_property.text}')
+            except Exception as e:
+                print(f'🚀 ~ error: {e}')
         
         # yield SeleniumRequest(url=self.start_urls[0], callback=self.parse, wait_time=60)
         # next = self.driver.find_element_by_xpath("//button[@aria-label='Next page']")
@@ -110,7 +119,7 @@ class RatesSpiderSpider(scrapy.Spider):
         #         print(
         #             '==================================================================failed or end===============')
         #         break
-        self.driver.close()
+        # self.driver.close()
 
 
     def parse_hotel(self, response):

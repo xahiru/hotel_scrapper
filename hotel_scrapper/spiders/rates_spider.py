@@ -115,17 +115,33 @@ class RatesSpiderSpider(scrapy.Spider):
             try:
 
                 print(
-                    '==================================================================inside the loop===============')
+                    '🚀 ==================================================================inside the loop===============')
                 print(response.xpath('//button[@aria-label="Next page"]'))
-
-                next = self.driver.find_element_by_xpath(
-                    '//button[@aria-label="Next page"]')
-                # print(next)
+                print(f'🚀 response.url {response.url}')
+                
+        
+                print("🚀 ~ finding next button===========>:")
+        
+                # self.driver.implicitly_wait(30)
+                # dismiss_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Dismiss sign in information."]')
+                # if dismiss_button:
+                #     dismiss_button.click()
+                
+                self.driver.get(response.url)
+                next_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Next page"]')
+                # self.driver.implicitly_wait(30)
+                # dismiss_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Dismiss sign in information."]')
+                # if dismiss_button:
+                #     dismiss_button.click()
+                
+                if next_button is None:
+                    print('🚀 ~ next_button is None')
+                    break
+                
                 url = self.driver.current_url
                 # print(url)
                 yield scrapy.Request(url, callback=self.parse_hotel)
-                print("page xxxxxx")
-                next.click()
+                next_button.click()
                 # self.driver.implicitly_wait(10)
             except:
                 print(

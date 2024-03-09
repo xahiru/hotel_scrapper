@@ -103,8 +103,8 @@ class RatesSpiderSpider(scrapy.Spider):
                 url = None
                 
                 load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
-            
-                WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable(load_more_button)).click()
+                while load_more_button:
+                    WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable(load_more_button)).click()
                 
             else:
                 # yield scrapy.Request(url, callback=self.parse_hotel)

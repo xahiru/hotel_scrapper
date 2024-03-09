@@ -3,6 +3,8 @@ from hotel_scrapper.items import HotelItem
 # from scrapy.loader import ItemLoader
 from selenium import webdriver
 from scrapy_selenium import SeleniumRequest
+from selenium.webdriver.common.by import By
+
 
 
 
@@ -23,22 +25,28 @@ class RatesSpiderSpider(scrapy.Spider):
     allowed_domains = ['www.booking.com']
 
     start_urls = [
-        # f"https://www.booking.com/searchresults.en-gb.html?ss=Maldives&ssne=Maldives&ssne_untouched=Maldives&label=gen173nr-1FCAEoggI46AdIM1gEaLQBiAEBmAEJuAEHyAEM2AEB6AEB-AELiAIBqAIDuAKcgfKuBsACAdICJDMzMDk1NWE2LTNlMGMtNDU1Ni1iYmE4LTBmNTZhMjY2NmRhNNgCBuACAQ&sid=d8f692159d780d393c7c6e9ed3d571a6&aid=304142&lang=en-gb&sb=1&src_elem=sb&src=searchresults&dest_id=129&dest_type=country&ac_position=0&ac_click_type=b&ac_langcode=en&ac_suggestion_list_length=5&search_selected=true&search_pageview_id=bf7c5dbc3b110061&ac_meta=GhBiZjdjNWRiYzNiMTEwMDYxIAAoATICZW46CE1hbGRpdmVzQABKAFAA&checkin={checkin}&checkout={checkout}&group_adults=2&no_rooms=1&group_children=0"
-        f"https://www.booking.com"
+        f"https://www.booking.com/searchresults.en-gb.html?ss=Maldives&ssne=Maldives&ssne_untouched=Maldives&label=gen173nr-1FCAEoggI46AdIM1gEaLQBiAEBmAEJuAEHyAEM2AEB6AEB-AELiAIBqAIDuAKcgfKuBsACAdICJDMzMDk1NWE2LTNlMGMtNDU1Ni1iYmE4LTBmNTZhMjY2NmRhNNgCBuACAQ&sid=d8f692159d780d393c7c6e9ed3d571a6&aid=304142&lang=en-gb&sb=1&src_elem=sb&src=searchresults&dest_id=129&dest_type=country&ac_position=0&ac_click_type=b&ac_langcode=en&ac_suggestion_list_length=5&search_selected=true&search_pageview_id=bf7c5dbc3b110061&ac_meta=GhBiZjdjNWRiYzNiMTEwMDYxIAAoATICZW46CE1hbGRpdmVzQABKAFAA&checkin={checkin}&checkout={checkout}&group_adults=2&no_rooms=1&group_children=0"
         ]
     
-
-    def __init__(self):
-        options = webdriver.ChromeOptions()
-        options.add_experimental_option("detach", True)
-        # options._binary_location = "../chromedriver_mac64/chromedriver"
-        self.driver = webdriver.Chrome(options=options)
-    
-    def start_requests(self):
-        url = "https://scrapingclub.com/exercise/list_infinite_scroll/"
-        self.driver.get(url)
+    # Selenium
+    # def __init__(self):
+    #     options = webdriver.ChromeOptions()
+    #     options.add_experimental_option("detach", True)
+    #     self.driver = webdriver.Chrome(options=options)
+   
+    # def start_requests(self):
+    #     # response = self.driver.get(self.start_urls[0])
+    #     # self.driver.implicitly_wait(2)
+    #     # xpath='/html/body/div[4]/div/div[2]/div/div[2]/div[3]/div[2]/div[2]/div[4]/div[2]/nav/nav/div/div[2]/ol/li[2]/button'
+    #     # next_button = self.driver.find_element(By.XPATH,xpath)
+    #     # print(f'currency_button {next_button}')
+        
+        
+        # /html/body/div[4]/div/div[2]/div/div[2]/div[3]/div[2]/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[1]/div/div[1]/div/div[1]
+        # self.driver.close()
         # yield SeleniumRequest(url=url, callback=self.parse, wait_time=60)
         # yield SeleniumRequest(url=self.start_urls[0], callback=self.parse, wait_time=60)
+        # yield scrapy.Request(url=self.start_urls[0], callback=self.parse)
 
     def parse(self, response):
         # self.driver.get(self.start_urls[0])

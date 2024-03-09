@@ -5,6 +5,9 @@ from selenium import webdriver
 from scrapy_selenium import SeleniumRequest
 from selenium.webdriver.common.by import By
 from selenium.webdriver import Keys, ActionChains
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 
 
 
@@ -85,8 +88,9 @@ class RatesSpiderSpider(scrapy.Spider):
             try:
         
                 print("🚀 ~ finding next button===========>:")
-                self.driver.get(response.url)
+                self.driver.get(url)
                 self.driver.implicitly_wait(30)
+                url = None
                 try:
                     dismiss_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Dismiss sign in information."]')
                     if dismiss_button:
@@ -101,16 +105,23 @@ class RatesSpiderSpider(scrapy.Spider):
                 if next_button is None:
                     print('🚀 ~ next_button is None')
                     url = None
+                    
+                    load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
                 
-                url = self.driver.current_url
-                yield scrapy.Request(url, callback=self.parse_hotel)
-                next_button.click()
+                    WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable(load_more_button)).click()
+
+                else:
+                    url = self.driver.current_url
+                    # yield scrapy.Request(url, callback=self.parse_hotel)
+                    next_button.click()
             except:
                 print(
                     '==================================================================failed or end===============')
                 break
-        self.driver.close()
+        # self.driver.close()
 
+    def parse_new_hotel(self, response):
+        pass
 
     def parse_hotel(self, response):
         print('==================================================================Passing started===============')

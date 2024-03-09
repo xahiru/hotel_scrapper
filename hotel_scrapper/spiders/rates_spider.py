@@ -28,13 +28,16 @@ class RatesSpiderSpider(scrapy.Spider):
         ]
     
 
-    # def __init__(self):
-        # options = webdriver.ChromeOptions()
-        # options.add_experimental_option("detach", True)
-        # self.driver = webdriver.Chrome(options=options)
-        # self.driver = webdriver.Chrome()
+    def __init__(self):
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option("detach", True)
+        options._binary_location = "../chromedriver_mac64/chromedriver"
+        self.driver = webdriver.Chrome(options=options)
+    
     def start_requests(self):
-        yield SeleniumRequest(url=self.start_urls[0], callback=self.parse, wait_time=60)
+        url = "https://scrapingclub.com/exercise/list_infinite_scroll/"
+        yield SeleniumRequest(url=url, callback=self.parse, wait_time=60)
+        # yield SeleniumRequest(url=self.start_urls[0], callback=self.parse, wait_time=60)
 
     def parse(self, response):
         # self.driver.get(self.start_urls[0])

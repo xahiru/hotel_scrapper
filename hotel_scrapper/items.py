@@ -26,6 +26,7 @@ class HotelItem(scrapy.Item):
     # price_details = scrapy.Field()
     conditions = scrapy.Field()
     # url = scrapy.Field()
+    details = scrapy.Field()
 
 
 class BookingReviewer(scrapy.Item):

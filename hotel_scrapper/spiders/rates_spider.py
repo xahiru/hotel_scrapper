@@ -146,6 +146,7 @@ class RatesSpiderSpider(scrapy.Spider):
                 current_property = property_cards.pop()
                 if current_property:
                     print(f'🚀 ~ current_property: {current_property.text}')
+                    details = current_property.text
                     title = current_property.find_element(by=By.XPATH, value='//div[@data-testid="title"]')
                     address = current_property.find_element(by=By.XPATH, value='//div[@data-testid="address"]')
                     price = current_property.find_element(by=By.XPATH, value='//div[@data-testid="availability-rate-information"]')
@@ -165,6 +166,7 @@ class RatesSpiderSpider(scrapy.Spider):
                     hotel['room_type'] = recom_units.text
                     hotel['original_price'] = address
                     hotel['guest_rating'] = "none"
+                    hotel['details'] = details
                     return hotel
             except NoSuchElementException as e:
                 print(f'🚀 ~ error: {e}')

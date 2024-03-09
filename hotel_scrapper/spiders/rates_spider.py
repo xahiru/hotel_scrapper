@@ -81,46 +81,58 @@ class RatesSpiderSpider(scrapy.Spider):
         #         print(f'🚀 ~ error: {e}')
     # ############################################## GOOD CODE END ##############################################
 
-
-
-        while url is not None:
-            print('🚀 ==================================================================inside the loop===============')
+        print('🚀 ==================================================================before looping recursive===============')
+        try:
+    
+            print("🚀 ~ finding next button===========>:")
+            self.driver.get(url)
+            self.driver.implicitly_wait(30)
             try:
-        
-                print("🚀 ~ finding next button===========>:")
-                self.driver.get(url)
-                self.driver.implicitly_wait(30)
+                dismiss_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Dismiss sign in information."]')
+                if dismiss_button:
+                    dismiss_button.click()
+            except Exception as e:
+                print("🚀 ~ dismiss_button not found")
+                pass
+                
+            next_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Next page"]')
+            # self.driver.implicitly_wait(30)
+            
+            if next_button is None:
+                print('🚀 ~ next_button is None')
                 url = None
-                try:
-                    dismiss_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Dismiss sign in information."]')
-                    if dismiss_button:
-                        dismiss_button.click()
-                except Exception as e:
-                    print("🚀 ~ dismiss_button not found")
-                    pass
-                    
-                next_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Next page"]')
-                # self.driver.implicitly_wait(30)
                 
-                if next_button is None:
-                    print('🚀 ~ next_button is None')
-                    url = None
-                    
-                    load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
+                load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
+            
+                WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable(load_more_button)).click()
                 
-                    WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable(load_more_button)).click()
+            else:
+                # yield scrapy.Request(url, callback=self.parse_hotel)
+                next_button.click()
+                self.driver.implicitly_wait(2)
+                url = self.driver.current_url
+        except:
+            print(
+                '==================================================================failed or end===============')
+            url = None
+            self.driver.close()
 
-                else:
-                    url = self.driver.current_url
-                    # yield scrapy.Request(url, callback=self.parse_hotel)
-                    next_button.click()
-            except:
-                print(
-                    '==================================================================failed or end===============')
-                break
-        # self.driver.close()
-
-    def parse_new_hotel(self, response):
+    def parse_new_hotel(self, property_cards):
+         # print("🚀 ~ finding property_card===========>:")
+        # property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
+        # print(f'🚀 ~ property_card: {property_card}')
+        # print(f'🚀 ~ property_card.count: {property_card.count}')
+        # print(f'🚀 ~ property_card. length: {len(property_card)}')
+        
+        # for idx in range(len(property_card)):
+        #     print("🚀 ~ new property===========>:")
+        #     try:
+                
+        #         current_property = property_card.pop()
+        #         if current_property:
+        #             print(f'🚀 ~ current_property: {current_property.text}')
+        #     except Exception as e:
+        #         print(f'🚀 ~ error: {e}')
         pass
 
     def parse_hotel(self, response):

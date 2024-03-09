@@ -86,7 +86,7 @@ class RatesSpiderSpider(scrapy.Spider):
     
             print("🚀 ~ finding next button===========>:")
             self.driver.get(url)
-            self.driver.implicitly_wait(30)
+            self.driver.implicitly_wait(15)
             try:
                 dismiss_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Dismiss sign in information."]')
                 if dismiss_button:
@@ -114,7 +114,7 @@ class RatesSpiderSpider(scrapy.Spider):
                 self.driver.implicitly_wait(2)
                 url = self.driver.current_url
                 print("🚀 ~ current url before calling parse:", url)
-                
+                self.parse_new_hotel()
                 self.parse(response, url)
         except:
             print(
@@ -122,22 +122,22 @@ class RatesSpiderSpider(scrapy.Spider):
             url = None
             self.driver.close()
 
-    def parse_new_hotel(self, property_cards):
-         # print("🚀 ~ finding property_card===========>:")
-        # property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
-        # print(f'🚀 ~ property_card: {property_card}')
-        # print(f'🚀 ~ property_card.count: {property_card.count}')
-        # print(f'🚀 ~ property_card. length: {len(property_card)}')
+    def parse_new_hotel(self):
+        print("🚀 ~ finding property_card===========>:")
+        property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
+        print(f'🚀 ~ property_card: {property_cards}')
+        print(f'🚀 ~ property_card.count: {property_cards.count}')
+        print(f'🚀 ~ property_card. length: {len(property_cards)}')
         
-        # for idx in range(len(property_card)):
-        #     print("🚀 ~ new property===========>:")
-        #     try:
+        for idx in range(len(property_cards)):
+            print("🚀 ~ new property===========>:")
+            try:
                 
-        #         current_property = property_card.pop()
-        #         if current_property:
-        #             print(f'🚀 ~ current_property: {current_property.text}')
-        #     except Exception as e:
-        #         print(f'🚀 ~ error: {e}')
+                current_property = property_cards.pop()
+                if current_property:
+                    print(f'🚀 ~ current_property: {current_property.text}')
+            except Exception as e:
+                print(f'🚀 ~ error: {e}')
         pass
 
     def parse_hotel(self, response):

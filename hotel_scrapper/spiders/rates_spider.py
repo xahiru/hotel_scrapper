@@ -55,7 +55,12 @@ class RatesSpiderSpider(scrapy.Spider):
         print(f'response: {response}')
         
         print("🚀 ~ finding next button===========>:")
-        # self.driver.implicitly_wait()
+        
+        self.driver.implicitly_wait(30)
+        dismiss_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Dismiss sign in information."]')
+        if dismiss_button:
+            dismiss_button.click()
+        
         # full_xpath_to_next_button_list = '/html/body/div[4]/div/div[2]/div/div[2]/div[3]/div[2]/div[2]/div[4]/div[2]/nav/nav/div/div[2]/ol/li'
         # next_button_list = self.driver.find_element(by=By.XPATH, value=full_xpath_to_next_button_list)
         # print(f'🚀 ~ next_button_list: {next_button_list}')

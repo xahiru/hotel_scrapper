@@ -39,7 +39,7 @@ class RatesSpiderSpider(scrapy.Spider):
         options = webdriver.ChromeOptions()
         options.add_experimental_option("detach", True)
         self.driver = webdriver.Chrome(options=options)
-        self.debug = True
+        self.debug = False
    
     def start_requests(self):
         yield scrapy.Request(url=self.start_urls[0], callback=self.parse, cb_kwargs={'url': self.start_urls[0]})
@@ -178,10 +178,10 @@ class RatesSpiderSpider(scrapy.Spider):
                        
                     hotel['star'] = "star"
                     hotel['d_price'] = price
-                    hotel['room_type'] = "recom_units"
-                    hotel['original_price'] = "address"
+                    hotel['room_type'] = recom_units
+                    hotel['original_price'] = address
                     hotel['guest_rating'] = "none"
-                    hotel['details'] = "details"
+                    hotel['details'] = details
                     yield hotel
             except NoSuchElementException as e:
                 print(f'🚀 ~ error: {e}')

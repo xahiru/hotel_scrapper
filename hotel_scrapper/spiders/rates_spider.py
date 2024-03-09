@@ -36,18 +36,8 @@ class RatesSpiderSpider(scrapy.Spider):
         options.add_experimental_option("detach", True)
         self.driver = webdriver.Chrome(options=options)
    
-    # def start_requests(self):
-    #     # response = self.driver.get(self.start_urls[0])
-    #     # self.driver.implicitly_wait(2)
-    #     # xpath='/html/body/div[4]/div/div[2]/div/div[2]/div[3]/div[2]/div[2]/div[4]/div[2]/nav/nav/div/div[2]/ol/li[2]/button'
-    #     # next_button = self.driver.find_element(By.XPATH,xpath)
-    #     # print(f'currency_button {next_button}')
-        
-        
-        # /html/body/div[4]/div/div[2]/div/div[2]/div[3]/div[2]/div[2]/div[3]/div[2]/div[1]/div[2]/div/div[1]/div/div[1]/div/div[1]
-        # self.driver.close()
-        # yield SeleniumRequest(url=self.start_urls[0], callback=self.parse_hotel, wait_time=60)
-        # yield scrapy.Request(url=self.start_urls[0], callback=self.parse)
+    def start_requests(self):
+        yield scrapy.Request(url=self.start_urls[0], callback=self.parse)
 
     def parse(self, response):
     # ############################################## GOOD CODE ##############################################
@@ -63,13 +53,9 @@ class RatesSpiderSpider(scrapy.Spider):
         #     dismiss_button.click()
     # ############################################## GOOD CODE END ##############################################
         
-        # full_xpath_to_next_button_list = '/html/body/div[4]/div/div[2]/div/div[2]/div[3]/div[2]/div[2]/div[4]/div[2]/nav/nav/div/div[2]/ol/li'
-        # next_button_list = self.driver.find_element(by=By.XPATH, value=full_xpath_to_next_button_list)
-        # print(f'🚀 ~ next_button_list: {next_button_list}')
+     
         mx_pages = 20
-        
-        # //*[@id="bodyconstraint-inner"]/div[2]/div/div[2]/div[3]/div[2]/div[2]/div[3]/div[4]
-        # /html/body/div[4]/div/div[2]/div/div[2]/div[3]/div[2]/div[2]/div[3]/div[4]
+      
        
     # FINDING PROPERTY CARD using selenium
     # ############################################## GOOD CODE ##############################################
@@ -89,23 +75,7 @@ class RatesSpiderSpider(scrapy.Spider):
         #     except Exception as e:
         #         print(f'🚀 ~ error: {e}')
     # ############################################## GOOD CODE END ##############################################
-        
-        # yield SeleniumRequest(url=self.start_urls[0], callback=self.parse, wait_time=60)
-        # next = self.driver.find_element_by_xpath("//button[@aria-label='Next page']")
-        # next.click()
-        # self.driver.find_element_by_xpath("/html/body/div[3]/div/div/header/nav[1]/div[2]/span[1]/button").click()  
-        # input = self.driver.find_element_by_xpath("//input[@placeholder='Where are you going?']")
-        # input.send_keys("Maldives")
-        # submit = self.driver.find_element_by_xpath('//*[@id="indexsearch"]/div[2]/div/form/div[1]/div[4]/button')
-        # submit.click()
-        
-        # ActionChains(self.driver)\
-        # .move_to_element(clickable)\
-        # .pause(1)\
-        # .click_and_hold()\
-        # .pause(1)\
-        # .send_keys("abc")\
-        # .perform()
+
         
 
       
@@ -122,7 +92,7 @@ class RatesSpiderSpider(scrapy.Spider):
         
                 print("🚀 ~ finding next button===========>:")
         
-                # self.driver.implicitly_wait(30)
+                self.driver.implicitly_wait(30)
                 # dismiss_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Dismiss sign in information."]')
                 # if dismiss_button:
                 #     dismiss_button.click()
@@ -140,7 +110,7 @@ class RatesSpiderSpider(scrapy.Spider):
                 
                 url = self.driver.current_url
                 # print(url)
-                yield scrapy.Request(url, callback=self.parse_hotel)
+                # yield scrapy.Request(url, callback=self.parse_hotel)
                 next_button.click()
                 # self.driver.implicitly_wait(10)
             except:

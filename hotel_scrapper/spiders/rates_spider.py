@@ -39,6 +39,7 @@ class RatesSpiderSpider(scrapy.Spider):
         options = webdriver.ChromeOptions()
         options.add_experimental_option("detach", True)
         self.driver = webdriver.Chrome(options=options)
+        self.debug = True
    
     def start_requests(self):
         yield scrapy.Request(url=self.start_urls[0], callback=self.parse, cb_kwargs={'url': self.start_urls[0]})
@@ -47,7 +48,7 @@ class RatesSpiderSpider(scrapy.Spider):
         print('🚀 ==================================================================inside parse===============')
         print("🚀 ~ response:", url)
         if url is None:
-            yield
+            return None
     # ############################################## GOOD CODE ##############################################
         # self.driver.get(self.start_urls[0])
         # print('==================================================================Passing started===============')
@@ -112,11 +113,12 @@ class RatesSpiderSpider(scrapy.Spider):
                     while load_more_button:
                         print('🚀 ~ load_more_button is found')
                         WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable(load_more_button)).click()
-                        load_more_button = None
+                        if self.debug:
+                            load_more_button = None
                 except NoSuchElementException as e:
                     print("🚀 ~ load_more_button not found")
                     pass
-                self.parse_new_hotel()
+                return self.parse_new_hotel()
             else:
                 # yield scrapy.Request(url, callback=self.parse_hotel)
                 print('🚀 ~ next_button is not None')
@@ -125,9 +127,10 @@ class RatesSpiderSpider(scrapy.Spider):
                 self.driver.implicitly_wait(2)
                 url = self.driver.current_url
                 print("🚀 ~ current url before calling parse:", url)
-                self.parse_new_hotel()
+                if self.debug:
+                    url = None
                 self.parse(response, url)
-                url = None
+                return self.parse_new_hotel()
         except:
             print(
                 '==================================================================failed or end===============')
@@ -154,7 +157,7 @@ class RatesSpiderSpider(scrapy.Spider):
                     try:
                         address = current_property.find_element(by=By.XPATH, value='//span[@data-testid="address"]')
                         address = address.text
-                    except NoSuchElementException as e:
+                    except NoSuchElementException:
                         print(f'🚀 ~ error: {e}')
                         address = "none"
                     price = current_property.find_element(by=By.XPATH, value='//div[@data-testid="availability-rate-information"]')
@@ -169,17 +172,17 @@ class RatesSpiderSpider(scrapy.Spider):
 
                     hotel['name'] = title
                     if star:
-                        start = star.get_attribute('aria-label')
+                        star = star.get_attribute('aria-label')
                     elif squars:
-                       start = squars.get_attribute('aria-label') 
+                       star = squars.get_attribute('aria-label') 
                        
                     hotel['star'] = "star"
                     hotel['d_price'] = price
-                    hotel['room_type'] = recom_units
+                    hotel['room_type'] = "recom_units"
                     hotel['original_price'] = "address"
                     hotel['guest_rating'] = "none"
-                    hotel['details'] = details
-                    return hotel
+                    hotel['details'] = "details"
+                    yield hotel
             except NoSuchElementException as e:
                 print(f'🚀 ~ error: {e}')
                 pass

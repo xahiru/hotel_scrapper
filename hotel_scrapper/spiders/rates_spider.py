@@ -47,7 +47,7 @@ class RatesSpiderSpider(scrapy.Spider):
         print('🚀 ==================================================================inside parse===============')
         print("🚀 ~ response:", url)
         if url is None:
-            return
+            yield
     # ############################################## GOOD CODE ##############################################
         # self.driver.get(self.start_urls[0])
         # print('==================================================================Passing started===============')
@@ -101,6 +101,7 @@ class RatesSpiderSpider(scrapy.Spider):
                 next_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Next page"]')
             except NoSuchElementException as e:
                 print("🚀 ~ next_button not found")
+                next_button = None
                 pass
             
             if next_button is None:

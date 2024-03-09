@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver import Keys, ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
 
 
 
@@ -45,6 +46,8 @@ class RatesSpiderSpider(scrapy.Spider):
     def parse(self, response, url):
         print('🚀 ==================================================================inside parse===============')
         print("🚀 ~ response:", url)
+        if url is None:
+            return
     # ############################################## GOOD CODE ##############################################
         # self.driver.get(self.start_urls[0])
         # print('==================================================================Passing started===============')
@@ -59,7 +62,6 @@ class RatesSpiderSpider(scrapy.Spider):
     # ############################################## GOOD CODE END ##############################################
         
      
-        mx_pages = 20
       
        
     # FINDING PROPERTY CARD using selenium
@@ -91,21 +93,28 @@ class RatesSpiderSpider(scrapy.Spider):
                 dismiss_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Dismiss sign in information."]')
                 if dismiss_button:
                     dismiss_button.click()
-            except Exception as e:
+            except NoSuchElementException as e:
                 print("🚀 ~ dismiss_button not found")
                 pass
-                
-            next_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Next page"]')
-            # self.driver.implicitly_wait(30)
+            
+            try:
+                next_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Next page"]')
+            except NoSuchElementException as e:
+                print("🚀 ~ next_button not found")
+                pass
             
             if next_button is None:
                 print('🚀 ~ next_button is None')
                 url = None
-                
-                load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
-                # while load_more_button:
-                #     WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable(load_more_button)).click()
-                
+                try:
+                    load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
+                    while load_more_button:
+                        print('🚀 ~ load_more_button is found')
+                        WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable(load_more_button)).click()
+                except NoSuchElementException as e:
+                    print("🚀 ~ load_more_button not found")
+                    pass
+                self.parse_new_hotel()
             else:
                 # yield scrapy.Request(url, callback=self.parse_hotel)
                 print('🚀 ~ next_button is not None')
@@ -155,10 +164,10 @@ class RatesSpiderSpider(scrapy.Spider):
                     hotel['room_type'] = recom_units.text
                     hotel['original_price'] = address
                     hotel['guest_rating'] = "none"
-
-                    yield hotel
-            except Exception as e:
+                    return hotel
+            except NoSuchElementException as e:
                 print(f'🚀 ~ error: {e}')
+                pass
         print('🚀 ==================================================================before looping recursive===============')
 
     def parse_hotel(self, response):

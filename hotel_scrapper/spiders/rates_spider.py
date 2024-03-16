@@ -195,50 +195,50 @@ class RatesSpiderSpider(scrapy.Spider):
                 print(f'🚀 ~ error: {e}')
                 pass
         print('🚀 ==================================================================before looping recursive===============')
+# # Old code ======
+#     def parse_hotel(self, response):
+#         print('==================================================================Passing started===============')
+#         print('response')
+#         # print(response)
 
-    def parse_hotel(self, response):
-        print('==================================================================Passing started===============')
-        print('response')
-        # print(response)
+#         # print(response.xpath('//div[@data-testid="property-card"]').extract())
+#         # hotel_cards = Response.xpath(
+#         #     '//div[@data-testid="property-card"]')
+#         hotel_titles = response.xpath(
+#             '//div[@data-testid="title"]').xpath('.//text()').extract()
+#         hotel = []
+#         location = response.xpath(
+#             '//span[@data-testid="address"]').xpath('.//text()').extract()
 
-        # print(response.xpath('//div[@data-testid="property-card"]').extract())
-        # hotel_cards = Response.xpath(
-        #     '//div[@data-testid="property-card"]')
-        hotel_titles = response.xpath(
-            '//div[@data-testid="title"]').xpath('.//text()').extract()
-        hotel = []
-        location = response.xpath(
-            '//span[@data-testid="address"]').xpath('.//text()').extract()
+#         # some stars are 0
+#         start_counts = response.xpath(
+#             '//div[@data-testid="rating-squares"]')
+#         prices = response.xpath(
+#             '//div[@data-testid="price-and-discounted-price"]').xpath('.//span/text()').extract()
+#         # SOme are unavaialable
+#         # recom_filter = a[not(contains(@id, 'xx'))]
+#         # recom_units = response.xpath('//div[@data-testid="recommended-units"]').xpath('.//dev/dev/dev[0]/span/text()'
+#         # .xpath('.//dev/dev/dev[0]/span/text()').extract()
+#         # recom_units = response.xpath(
+#         #     '//div[@data-testid="recommended-units"]').xpath('.//div/').get()
+#         # .xpath('.//dev/dev/dev[0]/span/text()').extract()
 
-        # some stars are 0
-        start_counts = response.xpath(
-            '//div[@data-testid="rating-squares"]')
-        prices = response.xpath(
-            '//div[@data-testid="price-and-discounted-price"]').xpath('.//span/text()').extract()
-        # SOme are unavaialable
-        # recom_filter = a[not(contains(@id, 'xx'))]
-        # recom_units = response.xpath('//div[@data-testid="recommended-units"]').xpath('.//dev/dev/dev[0]/span/text()'
-        # .xpath('.//dev/dev/dev[0]/span/text()').extract()
-        # recom_units = response.xpath(
-        #     '//div[@data-testid="recommended-units"]').xpath('.//div/').get()
-        # .xpath('.//dev/dev/dev[0]/span/text()').extract()
+#         print("=============printing====title===")
+#         for price, title, address in zip(hotel_titles, prices, location):
+#             print(title)
+#             print(price)
+#             print(address)
+#             # print(recom_units)
+#             # print(len(recom_units))
+#             # print(star)
 
-        print("=============printing====title===")
-        for price, title, address in zip(hotel_titles, prices, location):
-            print(title)
-            print(price)
-            print(address)
-            # print(recom_units)
-            # print(len(recom_units))
-            # print(star)
+#             hotel = HotelItem()
 
-            hotel = HotelItem()
+#             hotel['name'] = title
+#             hotel['star'] = "star"
+#             hotel['d_price'] = price
+#             # hotel['room_type'] = recom_units
+#             hotel['original_price'] = address
+#             hotel['guest_rating'] = "none"
 
-            hotel['name'] = title
-            hotel['star'] = "star"
-            hotel['d_price'] = price
-            # hotel['room_type'] = recom_units
-            hotel['original_price'] = address
-            hotel['guest_rating'] = "none"
-
-            yield hotel
+#             yield hotel

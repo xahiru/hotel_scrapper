@@ -120,9 +120,7 @@ class RatesSpiderSpider(scrapy.Spider):
                     pass
                 return self.parse_new_hotel()
             else:
-                # yield scrapy.Request(url, callback=self.parse_hotel)
                 print('🚀 ~ next_button is not None')
-                
                 print("🚀 ~ current url before calling parse:", url)
                 if self.debug:
                     url = None

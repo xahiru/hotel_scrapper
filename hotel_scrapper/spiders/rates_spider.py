@@ -121,7 +121,7 @@ class RatesSpiderSpider(scrapy.Spider):
                         delta_init = 2000 + init_int
                         init_int = delta_init
                         ActionChains(self.driver).scroll_from_origin(scroll_origin, 0, delta_init).perform()
-                        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(load_more_button)).click()
+                        WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable(load_more_button)).click()
                         if self.debug:
                             load_more_button = None
                 except NoSuchElementException as e:

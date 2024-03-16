@@ -8,6 +8,7 @@ from selenium.webdriver import Keys, ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.actions.wheel_input import ScrollOrigin
 
 
 
@@ -115,6 +116,8 @@ class RatesSpiderSpider(scrapy.Spider):
                     load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
                     while load_more_button:
                         print('🚀 ~ load_more_button is found')
+                        scroll_origin = ScrollOrigin.from_viewport(10, 10)
+                        ActionChains(self.driver).scroll_from_origin(scroll_origin, 0, 200).perform()
                         WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable(load_more_button)).click()
                         if self.debug:
                             load_more_button = None

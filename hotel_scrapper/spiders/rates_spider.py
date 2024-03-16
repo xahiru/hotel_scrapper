@@ -114,17 +114,21 @@ class RatesSpiderSpider(scrapy.Spider):
                 url = None
                 try:
                     load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
+                    init_int = 10
                     while load_more_button:
                         print('🚀 ~ load_more_button is found')
-                        scroll_origin = ScrollOrigin.from_viewport(10, 10)
-                        ActionChains(self.driver).scroll_from_origin(scroll_origin, 0, 200).perform()
-                        WebDriverWait(self.driver, 20).until(EC.element_to_be_clickable(load_more_button)).click()
+                        scroll_origin = ScrollOrigin.from_viewport(10, init_int)
+                        delta_init = 2000 + init_int
+                        init_int = delta_init
+                        ActionChains(self.driver).scroll_from_origin(scroll_origin, 0, delta_init).perform()
+                        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(load_more_button)).click()
                         if self.debug:
                             load_more_button = None
                 except NoSuchElementException as e:
                     print("🚀 ~ load_more_button not found")
                     pass
-                return self.parse_new_hotel()
+                property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
+                return self.parse_new_hotel(property_cards)
             else:
                 print('🚀 ~ next_button is not None')
                 print("🚀 ~ current url before calling parse:", url)
@@ -132,15 +136,16 @@ class RatesSpiderSpider(scrapy.Spider):
                     url = None
                 if next_button.is_enabled():
                     print('🚀 ~ next_button is enabled')
+                    print("🚀 ~ current url after calling parse:", url)
+                    property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
+                    self.parse_new_hotel(property_cards)
                     next_button.click()
                     self.driver.implicitly_wait(2)
                     url = self.driver.current_url
-                    
-                    print("🚀 ~ current url after calling parse:", url)
-                    self.parse_new_hotel()
+                    self.parse(response, url)
                 else:
                     url = None
-                self.parse(response, url)
+                # self.parse(response, url)
                 return 
         except:
             print(
@@ -148,14 +153,13 @@ class RatesSpiderSpider(scrapy.Spider):
             url = None
             self.driver.close()
 
-    def parse_new_hotel(self):
-        self.driver.implicitly_wait(2)
+    def parse_new_hotel(self, property_cards):
+        # self.driver.implicitly_wait(2)
         print("🚀 ~ finding property_card===========>:")
-        property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
         print(f'🚀 ~ property_card: {property_cards}')
         print(f'🚀 ~ property_card.count: {property_cards.count}')
         print(f'🚀 ~ property_card. length: {len(property_cards)}')
-        
+        # h = []
         for idx in range(len(property_cards)):
             print("🚀 ~ new property===========>:")
             try:
@@ -209,10 +213,13 @@ class RatesSpiderSpider(scrapy.Spider):
                     hotel['guest_rating'] = guest_rating
                     hotel['details'] = details
                     yield hotel
+                    # h.append(hotel)
+                    
             except NoSuchElementException as e:
                 print(f'🚀 ~ error: {e}')
                 pass
         print('🚀 ==================================================================before looping recursive===============')
+        # return h
 # # Old code ======
 #     def parse_hotel(self, response):
 #         print('==================================================================Passing started===============')

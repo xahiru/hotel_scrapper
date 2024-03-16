@@ -15,7 +15,7 @@ class HotelScrapperItem(scrapy.Item):
 class HotelItem(scrapy.Item):
     name = scrapy.Field()
     star = scrapy.Field()
-    # guest_rating = scrapy.Field()
+    guest_rating = scrapy.Field()
     # reviews = scrapy.Field()
     room_type = scrapy.Field()
     # room_details = scrapy.Field()

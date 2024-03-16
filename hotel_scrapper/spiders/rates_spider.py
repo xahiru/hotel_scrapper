@@ -172,6 +172,9 @@ class RatesSpiderSpider(scrapy.Spider):
                     
                     recom_units = current_property.find_element(by=By.XPATH, value='//h4')
                     recom_units = recom_units.text
+                    guest_rating = current_property.find_element(by=By.XPATH, value='//div[@data-testid="review-score"]')
+                    guest_rating = guest_rating.text
+
             
                     hotel = HotelItem()
 
@@ -185,7 +188,7 @@ class RatesSpiderSpider(scrapy.Spider):
                     hotel['d_price'] = price
                     hotel['room_type'] = recom_units
                     hotel['original_price'] = address
-                    # hotel['guest_rating'] = "none"
+                    hotel['guest_rating'] = guest_rating
                     hotel['details'] = details
                     yield hotel
             except NoSuchElementException as e:

@@ -123,14 +123,14 @@ class RatesSpiderSpider(scrapy.Spider):
                 # yield scrapy.Request(url, callback=self.parse_hotel)
                 print('🚀 ~ next_button is not None')
                 
-                self.driver.implicitly_wait(2)
-                url = self.driver.current_url
                 print("🚀 ~ current url before calling parse:", url)
                 if self.debug:
                     url = None
                 if next_button.is_enabled():
                     print('🚀 ~ next_button is enabled')
                     next_button.click()
+                    self.driver.implicitly_wait(2)
+                    url = self.driver.current_url
                 else:
                     url = None
                 self.parse(response, url)

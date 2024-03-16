@@ -129,10 +129,11 @@ class RatesSpiderSpider(scrapy.Spider):
                     next_button.click()
                     self.driver.implicitly_wait(2)
                     url = self.driver.current_url
+                    self.parse_new_hotel()
                 else:
                     url = None
                 self.parse(response, url)
-                return self.parse_new_hotel()
+                return 
         except:
             print(
                 '==================================================================failed or end===============')

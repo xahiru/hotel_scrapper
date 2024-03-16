@@ -156,7 +156,7 @@ class RatesSpiderSpider(scrapy.Spider):
                 if current_property:
                     print(f'🚀 ~ current_property: {current_property.text}')
                     print(f'🚀 ~ current_property element: {current_property}')
-                    print(f'🚀 ~ current_property innerHTML: {current_property.get_attribute('innerHTML')}')
+                    print(f"🚀 ~ current_property innerHTML: {current_property.get_attribute('innerHTML')}")
                     details = current_property.text
                     title = current_property.find_element(by=By.XPATH, value='//div[@data-testid="title"]')
                     title = title.text

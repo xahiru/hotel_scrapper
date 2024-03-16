@@ -133,6 +133,7 @@ class RatesSpiderSpider(scrapy.Spider):
                     self.driver.implicitly_wait(2)
                     url = self.driver.current_url
                     self.parse_new_hotel()
+                    # TODO still not working
                 else:
                     url = None
                 self.parse(response, url)

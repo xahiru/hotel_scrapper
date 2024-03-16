@@ -138,7 +138,6 @@ class RatesSpiderSpider(scrapy.Spider):
                     
                     print("🚀 ~ current url after calling parse:", url)
                     self.parse_new_hotel()
-                    # TODO still not working
                 else:
                     url = None
                 self.parse(response, url)
@@ -177,8 +176,14 @@ class RatesSpiderSpider(scrapy.Spider):
                         address = "none"
                     price = current_property.find_element(by=By.XPATH, value='.//div[@data-testid="availability-rate-information"]')
                     price = price.text
-                    squars = current_property.find_element(by=By.XPATH, value='.//div[@data-testid="rating-squares"]/..') #./div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/span/div
-                    star = current_property.find_element(by=By.XPATH, value='.//div[@data-testid="rating-stars"]/..') #./div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/span/div
+                    try:
+                        squars = current_property.find_element(by=By.XPATH, value='.//div[@data-testid="rating-squares"]/..') #./div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/span/div
+                    except NoSuchElementException:
+                        pass
+                    try:
+                        star = current_property.find_element(by=By.XPATH, value='.//div[@data-testid="rating-stars"]/..') #./div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/span/div
+                    except NoSuchElementException:
+                        pass
                     
                     recom_units = current_property.find_element(by=By.XPATH, value='.//h4')
                     recom_units = recom_units.text

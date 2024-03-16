@@ -155,23 +155,24 @@ class RatesSpiderSpider(scrapy.Spider):
                 current_property = property_cards.pop()
                 if current_property:
                     print(f'🚀 ~ current_property: {current_property.text}')
+                    print(f'🚀 ~ current_property element: {current_property}')
                     details = current_property.text
-                    title = current_property.find_element(by=By.XPATH, value='/div[@data-testid="title"]')
+                    title = current_property.find_element(by=By.XPATH, value='//div[@data-testid="title"]')
                     title = title.text
                     try:
-                        address = current_property.find_element(by=By.XPATH, value='/span[@data-testid="address"]')
+                        address = current_property.find_element(by=By.XPATH, value='//span[@data-testid="address"]')
                         address = address.text
                     except NoSuchElementException:
                         print(f'🚀 ~ error: {e}')
                         address = "none"
-                    price = current_property.find_element(by=By.XPATH, value='/div[@data-testid="availability-rate-information"]')
+                    price = current_property.find_element(by=By.XPATH, value='//div[@data-testid="availability-rate-information"]')
                     price = price.text
-                    squars = current_property.find_element(by=By.XPATH, value='/div[@data-testid="rating-squares"]/..') #./div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/span/div
-                    star = current_property.find_element(by=By.XPATH, value='/div[@data-testid="rating-stars"]/..') #./div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/span/div
+                    squars = current_property.find_element(by=By.XPATH, value='//div[@data-testid="rating-squares"]/..') #./div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/span/div
+                    star = current_property.find_element(by=By.XPATH, value='//div[@data-testid="rating-stars"]/..') #./div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/span/div
                     
-                    recom_units = current_property.find_element(by=By.XPATH, value='/h4')
+                    recom_units = current_property.find_element(by=By.XPATH, value='//h4')
                     recom_units = recom_units.text
-                    guest_rating = current_property.find_element(by=By.XPATH, value='/div[@data-testid="review-score"]')
+                    guest_rating = current_property.find_element(by=By.XPATH, value='//div[@data-testid="review-score"]')
                     guest_rating = guest_rating.text
 
             

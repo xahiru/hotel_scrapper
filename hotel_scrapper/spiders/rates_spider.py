@@ -142,6 +142,7 @@ class RatesSpiderSpider(scrapy.Spider):
             self.driver.close()
 
     def parse_new_hotel(self):
+        self.driver.implicitly_wait(2)
         print("🚀 ~ finding property_card===========>:")
         property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
         print(f'🚀 ~ property_card: {property_cards}')
@@ -184,7 +185,7 @@ class RatesSpiderSpider(scrapy.Spider):
                     hotel['d_price'] = price
                     hotel['room_type'] = recom_units
                     hotel['original_price'] = address
-                    hotel['guest_rating'] = "none"
+                    # hotel['guest_rating'] = "none"
                     hotel['details'] = details
                     yield hotel
             except NoSuchElementException as e:

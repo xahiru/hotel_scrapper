@@ -40,6 +40,7 @@ class RatesSpiderSpider(scrapy.Spider):
         options.add_experimental_option("detach", True)
         self.driver = webdriver.Chrome(options=options)
         self.debug = False
+        self.dialog_removed = False
    
     def start_requests(self):
         yield scrapy.Request(url=self.start_urls[0], callback=self.parse, cb_kwargs={'url': self.start_urls[0]})
@@ -90,13 +91,15 @@ class RatesSpiderSpider(scrapy.Spider):
             print("🚀 ~ finding next button===========>:")
             self.driver.get(url)
             self.driver.implicitly_wait(15)
-            try:
-                dismiss_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Dismiss sign in information."]')
-                if dismiss_button:
-                    dismiss_button.click()
-            except NoSuchElementException as e:
-                print("🚀 ~ dismiss_button not found")
-                pass
+            if not self.dialog_removed:
+                try:
+                    dismiss_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Dismiss sign in information."]')
+                    if dismiss_button:
+                        dismiss_button.click()
+                        self.dialog_removed = True
+                except NoSuchElementException as e:
+                    print("🚀 ~ dismiss_button not found")
+                    pass
             
             try:
                 next_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Next page"]')

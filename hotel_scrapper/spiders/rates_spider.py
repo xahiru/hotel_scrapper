@@ -176,14 +176,17 @@ class RatesSpiderSpider(scrapy.Spider):
                         address = "none"
                     price = current_property.find_element(by=By.XPATH, value='.//div[@data-testid="availability-rate-information"]')
                     price = price.text
+                    
                     try:
                         squars = current_property.find_element(by=By.XPATH, value='.//div[@data-testid="rating-squares"]/..') #./div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/span/div
-                    except NoSuchElementException:
-                        pass
+                    except NoSuchElementException as e:
+                        squars = None
+                        print(f'🚀 ~ error: {e}')
                     try:
                         star = current_property.find_element(by=By.XPATH, value='.//div[@data-testid="rating-stars"]/..') #./div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/span/div
-                    except NoSuchElementException:
-                        pass
+                    except NoSuchElementException as e:
+                        star = None
+                        print(f'🚀 ~ error: {e}')
                     
                     recom_units = current_property.find_element(by=By.XPATH, value='.//h4')
                     recom_units = recom_units.text

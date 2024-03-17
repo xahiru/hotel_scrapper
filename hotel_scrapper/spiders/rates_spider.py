@@ -2,7 +2,6 @@ import scrapy
 from hotel_scrapper.items import HotelItem
 # from scrapy.loader import ItemLoader
 from selenium import webdriver
-from scrapy_selenium import SeleniumRequest
 from selenium.webdriver.common.by import By
 from selenium.webdriver import Keys, ActionChains
 from selenium.webdriver.support.ui import WebDriverWait

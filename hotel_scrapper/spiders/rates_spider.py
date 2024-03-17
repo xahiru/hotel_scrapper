@@ -127,7 +127,7 @@ class RatesSpiderSpider(scrapy.Spider):
                     print("🚀 ~ load_more_button not found")
                     pass
                 property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
-                return self.parse_new_hotel(property_cards)
+                yield self.parse_new_hotel(property_cards)
                 # url = self.driver.current_url
                 # yield scrapy.Request(url, self.parse_hotel, dont_filter = True)
                 

@@ -126,8 +126,11 @@ class RatesSpiderSpider(scrapy.Spider):
                 except NoSuchElementException as e:
                     print("🚀 ~ load_more_button not found")
                     pass
-                property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
-                return self.parse_new_hotel(property_cards)
+                # property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
+                # return self.parse_new_hotel(property_cards)
+                url = self.driver.current_url
+                yield scrapy.Request(url, self.parse_hotel)
+                
             else:
                 print('🚀 ~ next_button is not None')
                 print("🚀 ~ current url before calling parse:", url)
@@ -221,49 +224,42 @@ class RatesSpiderSpider(scrapy.Spider):
         print('🚀 ==================================================================before looping recursive===============')
         # return h
 # # Old code ======
-#     def parse_hotel(self, response):
-#         print('==================================================================Passing started===============')
-#         print('response')
-#         # print(response)
+    def parse_hotel(self, response):
+        print('==================================================================Passing started===============')
+        print('response')
+        # print(response)
+        hotel_cards = response.xpath('//div[@data-testid="property-card"]')
+        for hotel_card in hotel_cards:
+            title = hotel_card.xpath('.//div[@data-testid="title"]/text()').get()
+            address = hotel_card.xpath('.//span[@data-testid="address"]/text()').get()
+            price = hotel_card.xpath('.//div[@data-testid="availability-rate-information"]/text()').get()
+            
+            try:
+                squars = hotel_card.xpath('.//div[@data-testid="rating-squares"]/..')
+            except NoSuchElementException as e:
+                squars = None
+                print(f'🚀 ~ error: {e}')
+            
+            try:
+                star = hotel_card.xpath('.//div[@data-testid="rating-stars"]/..')
+            except NoSuchElementException as e:
+                star = None
+                print(f'🚀 ~ error: {e}')
 
-#         # print(response.xpath('//div[@data-testid="property-card"]').extract())
-#         # hotel_cards = Response.xpath(
-#         #     '//div[@data-testid="property-card"]')
-#         hotel_titles = response.xpath(
-#             '//div[@data-testid="title"]').xpath('.//text()').extract()
-#         hotel = []
-#         location = response.xpath(
-#             '//span[@data-testid="address"]').xpath('.//text()').extract()
+            if star:
+                star = star.get_attribute('aria-label')
+            elif squars:
+                star = squars.get_attribute('aria-label')
+                
+            recom_units = hotel_card.xpath('.//h4/text()').get()
+            guest_rating = hotel_card.xpath('.//div[@data-testid="review-score"]/text()').get()
+            
+            hotel = HotelItem()
+            hotel['name'] = title
+            hotel['star'] = "star"
+            hotel['d_price'] = price
+            hotel['room_type'] = recom_units
+            hotel['original_price'] = address
+            hotel['guest_rating'] = guest_rating
 
-#         # some stars are 0
-#         start_counts = response.xpath(
-#             '//div[@data-testid="rating-squares"]')
-#         prices = response.xpath(
-#             '//div[@data-testid="price-and-discounted-price"]').xpath('.//span/text()').extract()
-#         # SOme are unavaialable
-#         # recom_filter = a[not(contains(@id, 'xx'))]
-#         # recom_units = response.xpath('//div[@data-testid="recommended-units"]').xpath('.//dev/dev/dev[0]/span/text()'
-#         # .xpath('.//dev/dev/dev[0]/span/text()').extract()
-#         # recom_units = response.xpath(
-#         #     '//div[@data-testid="recommended-units"]').xpath('.//div/').get()
-#         # .xpath('.//dev/dev/dev[0]/span/text()').extract()
-
-#         print("=============printing====title===")
-#         for price, title, address in zip(hotel_titles, prices, location):
-#             print(title)
-#             print(price)
-#             print(address)
-#             # print(recom_units)
-#             # print(len(recom_units))
-#             # print(star)
-
-#             hotel = HotelItem()
-
-#             hotel['name'] = title
-#             hotel['star'] = "star"
-#             hotel['d_price'] = price
-#             # hotel['room_type'] = recom_units
-#             hotel['original_price'] = address
-#             hotel['guest_rating'] = "none"
-
-#             yield hotel
+            yield hotel

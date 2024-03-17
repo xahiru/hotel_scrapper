@@ -124,10 +124,8 @@ class RatesSpiderSpider(scrapy.Spider):
                         if self.debug:
                             load_more_button = None
                 except NoSuchElementException as e:
-                    print("🚀 ~ load_more_button not found")
-                    pass
-                property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
-                yield self.parse_new_hotel(property_cards)
+                    print(f"🚀 ~ load_more_button not found{e}")
+                yield self.parse_new_hotel()
                 # url = self.driver.current_url
                 # yield scrapy.Request(url, self.parse_hotel, dont_filter = True)
                 
@@ -139,25 +137,24 @@ class RatesSpiderSpider(scrapy.Spider):
                 if next_button.is_enabled():
                     print('🚀 ~ next_button is enabled')
                     print("🚀 ~ current url after calling parse:", url)
-                    property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
-                    self.parse_new_hotel(property_cards)
                     next_button.click()
                     self.driver.implicitly_wait(2)
                     url = self.driver.current_url
                     self.parse(response, url)
-                    yield scrapy.Request(url, self.parse_hotel, dont_filter = True)
+                    # yield scrapy.Request(url, self.parse_hotel, dont_filter = True)
                 else:
                     url = None
                 # self.parse(response, url)
-                return 
+                 
         except:
             print(
                 '==================================================================failed or end===============')
             url = None
             self.driver.close()
 
-    def parse_new_hotel(self, property_cards):
+    def parse_new_hotel(self):
         # self.driver.implicitly_wait(2)
+        property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
         print("🚀 ~ finding property_card===========>:")
         print(f'🚀 ~ property_card: {property_cards}')
         print(f'🚀 ~ property_card.count: {property_cards.count}')

@@ -28,3 +28,14 @@ Currently, the selenum driver is set using `which`, feel free to change driver a
     - scrapy crawl rates_spider -o filename.csv
 
 The saved file will be locted in the same folder
+
+## TODO
+
+    - For now data is saved sequentially, needs to make it parallel.
+    - scrapy-selenium library is buggy so need to remove it, thought its being imported, atcually its not used.
+
+    - clean up and refactor the code
+
+    - parsing hotel card using scrapy instead of selenium.
+
+    - use a different hosting for data (.csv) files

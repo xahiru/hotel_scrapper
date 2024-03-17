@@ -33,7 +33,6 @@ The saved file will be locted in the same folder
 ## TODO
 
     - For now data is saved sequentially, needs to make it parallel.
-    - scrapy-selenium library is buggy so need to remove it, thought its being imported, atcually its not used.
 
     - clean up and refactor the code
 

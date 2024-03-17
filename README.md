@@ -2,6 +2,8 @@
 
 This app uses scarpy with selenium to crawl on booking.com data.
 
+Currently, the selenum driver is set using `which`, feel free to change driver as needed. Also currently I'm running the driver in detach mode for debugging, onece complete will change it headless so that code can be hosted in the cloud.
+
 ## Download the repository as zip file or clone using:
 
     - git clone https://github.com/xahiru/hotel_scrapper.git

@@ -50,41 +50,6 @@ class RatesSpiderSpider(scrapy.Spider):
         print("🚀 ~ response:", url)
         if url is None:
             return None
-    # ############################################## GOOD CODE ##############################################
-        # self.driver.get(self.start_urls[0])
-        # print('==================================================================Passing started===============')
-        # print(f'response: {response}')
-        
-        # print("🚀 ~ finding next button===========>:")
-        
-        # self.driver.implicitly_wait(30)
-        # dismiss_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Dismiss sign in information."]')
-        # if dismiss_button:
-        #     dismiss_button.click()
-    # ############################################## GOOD CODE END ##############################################
-        
-     
-      
-       
-    # FINDING PROPERTY CARD using selenium
-    # ############################################## GOOD CODE ##############################################
-        # print("🚀 ~ finding property_card===========>:")
-        # property_card = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
-        # print(f'🚀 ~ property_card: {property_card}')
-        # print(f'🚀 ~ property_card.count: {property_card.count}')
-        # print(f'🚀 ~ property_card. length: {len(property_card)}')
-        
-        # for idx in range(len(property_card)):
-        #     print("🚀 ~ new property===========>:")
-        #     try:
-                
-        #         current_property = property_card.pop()
-        #         if current_property:
-        #             print(f'🚀 ~ current_property: {current_property.text}')
-        #     except Exception as e:
-        #         print(f'🚀 ~ error: {e}')
-    # ############################################## GOOD CODE END ##############################################
-
         print('🚀 ==================================================================before looping recursive===============')
         try:
     
@@ -111,23 +76,28 @@ class RatesSpiderSpider(scrapy.Spider):
             if next_button is None:
                 print('🚀 ~ next_button is None')
                 url = None
-                try:
-                    load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
-                    init_int = 10
-                    while load_more_button:
-                        print('🚀 ~ load_more_button is found')
-                        scroll_origin = ScrollOrigin.from_viewport(10, init_int)
-                        delta_init = 2000 + init_int
-                        init_int = delta_init
-                        ActionChains(self.driver).scroll_from_origin(scroll_origin, 0, delta_init).perform()
-                        WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable(load_more_button)).click()
-                        if self.debug:
-                            load_more_button = None
-                except NoSuchElementException as e:
-                    print(f"🚀 ~ load_more_button not found{e}")
-                yield self.parse_new_hotel()
-                # url = self.driver.current_url
-                # yield scrapy.Request(url, self.parse_hotel, dont_filter = True)
+                while True:
+                    # Scroll down to bottom
+                    self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+                    # load the website
+                    self.driver.implicitly_wait(2)
+                    print('🚀 ~ loading more')                    
+                # try:
+                #     load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
+                #     # init_int = 10
+                #     # while load_more_button:
+                #     #     print('🚀 ~ load_more_button is found')
+                #     #     scroll_origin = ScrollOrigin.from_viewport(10, init_int)
+                #     #     delta_init = 2000 + init_int
+                #     #     init_int = delta_init
+                #     #     ActionChains(self.driver).scroll_from_origin(scroll_origin, 0, delta_init).perform()
+                #     #     WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable(load_more_button)).click()
+                #     #     if self.debug:
+                #     #         load_more_button = None
+                # except NoSuchElementException as e:
+                #     print(f"🚀 ~ load_more_button not found{e}")
+                # yield self.parse_new_hotel()
                 
             else:
                 print('🚀 ~ next_button is not None')
@@ -141,10 +111,9 @@ class RatesSpiderSpider(scrapy.Spider):
                     self.driver.implicitly_wait(2)
                     url = self.driver.current_url
                     self.parse(response, url)
-                    # yield scrapy.Request(url, self.parse_hotel, dont_filter = True)
                 else:
+                    print('🚀 ~ next_button is not enabled')
                     url = None
-                # self.parse(response, url)
                  
         except:
             print(

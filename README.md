@@ -6,26 +6,27 @@ Currently, the selenum driver is set using `which`, feel free to change driver a
 
 ## Download the repository as zip file or clone using:
 
-    - git clone https://github.com/xahiru/hotel_scrapper.git
+    - `git clone https://github.com/xahiru/hotel_scrapper.git`
+
+## Go into the directory
+
+    - `cd hotel_scrapper`
 
 ## Prepare environment
 
     Create a conda or venv environment using the following command:
-        - create -n hotel_scrapper python=3.9 -y
+        - `create -n hotel_scrapper python=3.9 -y`
         or
-        - python -m venv hotel_scrapper
+        - `python -m venv hotel_scrapper`
 
-## Go into the directory
+## Activate and install the libraries
 
-    - cd hotel_scrapper
-
-## install the libraries
-
-    - pip install -r requirements.txt
+    - `source .venv/bin/activate`
+    - `pip install -r requirements.txt`
 
 ## Run the scrapper
 
-    - scrapy crawl rates_spider -o filename.csv
+    - `scrapy crawl rates_spider -o filename.csv`
 
 The saved file will be locted in the same folder
 

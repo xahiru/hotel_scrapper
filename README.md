@@ -40,3 +40,5 @@ The saved file will be locted in the same folder
     - parsing hotel card using scrapy instead of selenium.
 
     - use a different hosting for data (.csv) files
+
+    - convert it to a lambda function and schedule it to run on AWS

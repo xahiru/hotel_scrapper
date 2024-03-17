@@ -126,10 +126,10 @@ class RatesSpiderSpider(scrapy.Spider):
                 except NoSuchElementException as e:
                     print("🚀 ~ load_more_button not found")
                     pass
-                # property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
-                # return self.parse_new_hotel(property_cards)
-                url = self.driver.current_url
-                yield scrapy.Request(url, self.parse_hotel)
+                property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
+                return self.parse_new_hotel(property_cards)
+                # url = self.driver.current_url
+                # yield scrapy.Request(url, self.parse_hotel, dont_filter = True)
                 
             else:
                 print('🚀 ~ next_button is not None')
@@ -145,6 +145,7 @@ class RatesSpiderSpider(scrapy.Spider):
                     self.driver.implicitly_wait(2)
                     url = self.driver.current_url
                     self.parse(response, url)
+                    yield scrapy.Request(url, self.parse_hotel, dont_filter = True)
                 else:
                     url = None
                 # self.parse(response, url)

@@ -95,20 +95,72 @@ class RatesSpiderSpider(scrapy.Spider):
                 except NoSuchElementException as e:
                     load_more_button = False
                     pass
-            # yield self.parse_new_hotel()
-            self.hello()
-            yield self.parse_new_hotel(self.driver)
-                # load the website
-            #     # init_int = 10
-            #     # while load_more_button:
-            #     #     print('🚀 ~ load_more_button is found')
-            #     #     scroll_origin = ScrollOrigin.from_viewport(10, init_int)
-            #     #     delta_init = 2000 + init_int
-            #     #     init_int = delta_init
-            #     #     ActionChains(self.driver).scroll_from_origin(scroll_origin, 0, delta_init).perform()
-            #     #     if self.debug:
-            #     #         load_more_button = None
-            #     print(f"🚀 ~ load_more_button not found{e}")
+            
+            property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
+            print("🚀 ~ finding property_card===========>:")
+            print(f'🚀 ~ property_card: {property_cards}')
+            print(f'🚀 ~ property_card.count: {property_cards.count}')
+            print(f'🚀 ~ property_card. length: {len(property_cards)}')
+            for idx in range(len(property_cards)):
+                print("🚀 ~ new property===========>:")
+                print(f"🚀 ~ SINGLE PAGE===========>:with index: {idx}")
+                try:
+                    
+                    current_property = property_cards.pop()
+                    if current_property:
+                        print(f'🚀 ~ current_property: {current_property.text}')
+                        # print(f'🚀 ~ current_property element: {current_property}')
+                        # print(f"🚀 ~ current_property innerHTML: {current_property.get_attribute('innerHTML')}")
+                        details = current_property.text
+                        
+                        title = current_property.find_element(by=By.XPATH, value='.//div[@data-testid="title"]')
+                        title = title.text
+                        try:
+                            address = current_property.find_element(by=By.XPATH, value='.//span[@data-testid="address"]')
+                            address = address.text
+                        except NoSuchElementException:
+                            print(f'🚀 ~ error: {e}')
+                            address = "none"
+                        price = current_property.find_element(by=By.XPATH, value='.//div[@data-testid="availability-rate-information"]')
+                        price = price.text
+                        
+                        try:
+                            squars = current_property.find_element(by=By.XPATH, value='.//div[@data-testid="rating-squares"]/..') #./div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/span/div
+                        except NoSuchElementException as e:
+                            squars = None
+                            print(f'🚀 ~ error: {e}')
+                        try:
+                            star = current_property.find_element(by=By.XPATH, value='.//div[@data-testid="rating-stars"]/..') #./div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/span/div
+                        except NoSuchElementException as e:
+                            star = None
+                            print(f'🚀 ~ error: {e}')
+                        
+                        recom_units = current_property.find_element(by=By.XPATH, value='.//h4')
+                        recom_units = recom_units.text
+                        guest_rating = current_property.find_element(by=By.XPATH, value='.//div[@data-testid="review-score"]')
+                        guest_rating = guest_rating.text
+
+                
+                        hotel = HotelItem()
+
+                        hotel['name'] = title
+                        if star:
+                            star = star.get_attribute('aria-label')
+                        elif squars:
+                            star = squars.get_attribute('aria-label') 
+                        
+                        hotel['star'] = star
+                        hotel['d_price'] = price
+                        hotel['room_type'] = recom_units
+                        hotel['original_price'] = address
+                        hotel['guest_rating'] = guest_rating
+                        hotel['details'] = details
+                        yield hotel
+                        # h.append(hotel)
+                        
+                except NoSuchElementException as e:
+                    print(f'🚀 ~ error: {e}')
+                    yield 
             
         else:
             print('🚀 ~ next_button Exists')
@@ -122,10 +174,73 @@ class RatesSpiderSpider(scrapy.Spider):
             #     print("🚀 ~ Wait done after clicked:")
             #     url = self.driver.current_url
             #     print("🚀 ~ NEW URL:", url)
-            self.hello()
-            yield self.parse_new_hotel(self.driver)
+            print('🚀 ~ parse_new_hotel')
+            property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
+            print("🚀 ~ finding property_card===========>:")
+            print(f'🚀 ~ property_card: {property_cards}')
+            print(f'🚀 ~ property_card.count: {property_cards.count}')
+            print(f'🚀 ~ property_card. length: {len(property_cards)}')
+            for idx in range(len(property_cards)):
+                print("🚀 ~ new property===========>:")
+                print(f"🚀 ~ MULTI PAGE===========>:with index: {idx}")
+                try:
+                    
+                    current_property = property_cards.pop()
+                    if current_property:
+                        print(f'🚀 ~ current_property: {current_property.text}')
+                        # print(f'🚀 ~ current_property element: {current_property}')
+                        # print(f"🚀 ~ current_property innerHTML: {current_property.get_attribute('innerHTML')}")
+                        details = current_property.text
+                        
+                        title = current_property.find_element(by=By.XPATH, value='.//div[@data-testid="title"]')
+                        title = title.text
+                        try:
+                            address = current_property.find_element(by=By.XPATH, value='.//span[@data-testid="address"]')
+                            address = address.text
+                        except NoSuchElementException:
+                            print(f'🚀 ~ error: {e}')
+                            address = "none"
+                        price = current_property.find_element(by=By.XPATH, value='.//div[@data-testid="availability-rate-information"]')
+                        price = price.text
+                        
+                        try:
+                            squars = current_property.find_element(by=By.XPATH, value='.//div[@data-testid="rating-squares"]/..') #./div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/span/div
+                        except NoSuchElementException as e:
+                            squars = None
+                            print(f'🚀 ~ error: {e}')
+                        try:
+                            star = current_property.find_element(by=By.XPATH, value='.//div[@data-testid="rating-stars"]/..') #./div[2]/div/div[1]/div/div[1]/div/div[1]/div/div/span/div
+                        except NoSuchElementException as e:
+                            star = None
+                            print(f'🚀 ~ error: {e}')
+                        
+                        recom_units = current_property.find_element(by=By.XPATH, value='.//h4')
+                        recom_units = recom_units.text
+                        guest_rating = current_property.find_element(by=By.XPATH, value='.//div[@data-testid="review-score"]')
+                        guest_rating = guest_rating.text
 
-        # property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
+                
+                        hotel = HotelItem()
+
+                        hotel['name'] = title
+                        if star:
+                            star = star.get_attribute('aria-label')
+                        elif squars:
+                            star = squars.get_attribute('aria-label') 
+                        
+                        hotel['star'] = star
+                        hotel['d_price'] = price
+                        hotel['room_type'] = recom_units
+                        hotel['original_price'] = address
+                        hotel['guest_rating'] = guest_rating
+                        hotel['details'] = details
+                        yield hotel
+                        # h.append(hotel)
+                        
+                except NoSuchElementException as e:
+                    print(f'🚀 ~ error: {e}')
+                    yield 
+
                  
        
 

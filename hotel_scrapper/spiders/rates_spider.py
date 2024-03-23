@@ -93,6 +93,7 @@ class RatesSpiderSpider(scrapy.Spider):
                         load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
                         WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable(load_more_button)).click()
                     except NoSuchElementException as e:
+                        load_more_button = False
                         pass
                 yield self.parse_new_hotel()
                     # load the website

@@ -120,7 +120,7 @@ class RatesSpiderSpider(scrapy.Spider):
                 #     print("🚀 ~ Wait done after clicked:")
                 #     url = self.driver.current_url
                 #     print("🚀 ~ NEW URL:", url)
-                yield self.parse_new_hotel()
+                return self.parse_new_hotel()
                  
         except:
             print(

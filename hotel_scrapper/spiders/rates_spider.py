@@ -52,81 +52,77 @@ class RatesSpiderSpider(scrapy.Spider):
         print(f"🚀 ~ URL for the Loop{self.loop_count}: {url}" )
  
         print('🚀 ==================================================================before looping recursive===============')
-        try:
+        
             
-            self.driver.get(url)
-            self.driver.implicitly_wait(15)
-            if not self.dialog_removed:
-                try:
-                    dismiss_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Dismiss sign in information."]')
-                    if dismiss_button:
-                        dismiss_button.click()
-                        self.dialog_removed = True
-                except NoSuchElementException as e:
-                    print("🚀 ~ dismiss_button not found")
-                    pass
-            
+        self.driver.get(url)
+        self.driver.implicitly_wait(15)
+        if not self.dialog_removed:
             try:
-                print("🚀 ~ finding next button===========>:")
-                next_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Next page"]')
-                print("🚀 ~ finding next button found inside try===========>:")
+                dismiss_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Dismiss sign in information."]')
+                if dismiss_button:
+                    dismiss_button.click()
+                    self.dialog_removed = True
             except NoSuchElementException as e:
-                print("🚀 ~ next_button not found")
-                next_button = None
+                print("🚀 ~ dismiss_button not found")
                 pass
+        
+        try:
+            print("🚀 ~ finding next button===========>:")
+            next_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Next page"]')
+            print("🚀 ~ finding next button found inside try===========>:")
+        except NoSuchElementException as e:
+            print("🚀 ~ next_button not found")
+            next_button = None
+            pass
+        
+        if next_button is None:
+            print('🚀 ~ next_button is None')
+            while_count = 0
+            load_more_button = True
+            init_int = self.driver.execute_script("return document.body.scrollHeight")
+            delta_init = init_int
+            while load_more_button:
+                # Scroll down to bottom
+                while_count += 1
+                print(f'🚀 ~ while_count: {while_count}')
+                self.driver.implicitly_wait(5)
+                self.driver.execute_script(f"window.scrollTo(0, {delta_init});")
+                print('🚀 ~ searching for loading more')                    
+                delta_init +=  init_int
+                try:
+                    load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
+                    WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable(load_more_button)).click()
+                except NoSuchElementException as e:
+                    load_more_button = False
+                    pass
+            yield self.parse_new_hotel()
+                # load the website
+            #     # init_int = 10
+            #     # while load_more_button:
+            #     #     print('🚀 ~ load_more_button is found')
+            #     #     scroll_origin = ScrollOrigin.from_viewport(10, init_int)
+            #     #     delta_init = 2000 + init_int
+            #     #     init_int = delta_init
+            #     #     ActionChains(self.driver).scroll_from_origin(scroll_origin, 0, delta_init).perform()
+            #     #     if self.debug:
+            #     #         load_more_button = None
+            #     print(f"🚀 ~ load_more_button not found{e}")
             
-            if next_button is None:
-                print('🚀 ~ next_button is None')
-                while_count = 0
-                load_more_button = True
-                init_int = self.driver.execute_script("return document.body.scrollHeight")
-                delta_init = init_int
-                while load_more_button:
-                    # Scroll down to bottom
-                    while_count += 1
-                    print(f'🚀 ~ while_count: {while_count}')
-                    self.driver.implicitly_wait(5)
-                    self.driver.execute_script(f"window.scrollTo(0, {delta_init});")
-                    print('🚀 ~ searching for loading more')                    
-                    delta_init +=  init_int
-                    try:
-                        load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
-                        WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable(load_more_button)).click()
-                    except NoSuchElementException as e:
-                        load_more_button = False
-                        pass
-                yield self.parse_new_hotel()
-                    # load the website
-                #     # init_int = 10
-                #     # while load_more_button:
-                #     #     print('🚀 ~ load_more_button is found')
-                #     #     scroll_origin = ScrollOrigin.from_viewport(10, init_int)
-                #     #     delta_init = 2000 + init_int
-                #     #     init_int = delta_init
-                #     #     ActionChains(self.driver).scroll_from_origin(scroll_origin, 0, delta_init).perform()
-                #     #     if self.debug:
-                #     #         load_more_button = None
-                #     print(f"🚀 ~ load_more_button not found{e}")
-                
-            else:
-                print('🚀 ~ next_button Exists')
-                print("🚀 ~ current url before calling parse:", url)
-                
-                # if next_button.is_enabled():
-                #     print('🚀 ~ next_button is enabled')
-                #     next_button.click()
-                #     print("🚀 ~ Button clicked:")
-                #     self.driver.implicitly_wait(10)
-                #     print("🚀 ~ Wait done after clicked:")
-                #     url = self.driver.current_url
-                #     print("🚀 ~ NEW URL:", url)
-                return self.parse_new_hotel()
+        else:
+            print('🚀 ~ next_button Exists')
+            print("🚀 ~ current url before calling parse:", url)
+            
+            # if next_button.is_enabled():
+            #     print('🚀 ~ next_button is enabled')
+            #     next_button.click()
+            #     print("🚀 ~ Button clicked:")
+            #     self.driver.implicitly_wait(10)
+            #     print("🚀 ~ Wait done after clicked:")
+            #     url = self.driver.current_url
+            #     print("🚀 ~ NEW URL:", url)
+            return self.parse_new_hotel()
                  
-        except:
-            print(
-                '==================================================================failed or end===============')
-            url = None
-            self.driver.close()
+       
 
     def parse_new_hotel(self):
         # self.driver.implicitly_wait(2)

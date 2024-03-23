@@ -80,16 +80,20 @@ class RatesSpiderSpider(scrapy.Spider):
             
             if next_button is None:
                 print('🚀 ~ next_button is None')
+                while_count = 0
                 url = None
                 load_more_button = True
                 init_int = self.driver.execute_script("return document.body.scrollHeight")
                 delta_init = init_int
                 while load_more_button:
                     # Scroll down to bottom
+                    while_count += 1
+                    print(f'🚀 ~ while_count: {while_count}')
                     self.driver.implicitly_wait(5)
                     self.driver.execute_script(f"window.scrollTo(0, {delta_init});")
                     print('🚀 ~ searching for loading more')                    
                     load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
+                    WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable(load_more_button)).click()
                     delta_init +=  init_int
                     # load the website
                 # try:
@@ -100,7 +104,6 @@ class RatesSpiderSpider(scrapy.Spider):
                 #     #     delta_init = 2000 + init_int
                 #     #     init_int = delta_init
                 #     #     ActionChains(self.driver).scroll_from_origin(scroll_origin, 0, delta_init).perform()
-                #     #     WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable(load_more_button)).click()
                 #     #     if self.debug:
                 #     #         load_more_button = None
                 # except NoSuchElementException as e:

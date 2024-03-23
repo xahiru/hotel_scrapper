@@ -240,9 +240,14 @@ class RatesSpiderSpider(scrapy.Spider):
                 except NoSuchElementException as e:
                     print(f'🚀 ~ error: {e}')
                     yield 
-
-                 
-       
+            if next_button.is_enabled():
+                print('🚀 ~ next_button is enabled')
+                next_button.click()
+                print("🚀 ~ Button clicked:")
+                self.driver.implicitly_wait(10)
+                print("🚀 ~ Wait done after clicked:")
+                url = self.driver.current_url
+                print("🚀 ~ NEW URL:", url)
 
     def hello(self):
         print('🚀 ~ hello world')

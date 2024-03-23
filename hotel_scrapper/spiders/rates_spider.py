@@ -86,13 +86,13 @@ class RatesSpiderSpider(scrapy.Spider):
                 body_height = self.driver.execute_script("return document.body.scrollHeight")
                 while load_more_button:
                     # Scroll down to bottom
+                    self.driver.implicitly_wait(5)
                     self.driver.execute_script(f"window.scrollTo(0, {body_height});")
+                    print('🚀 ~ searching for loading more')                    
                     load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
                     delta_init = 2000 + init_int
                     init_int = delta_init
                     # load the website
-                    self.driver.implicitly_wait(2)
-                    print('🚀 ~ loading more')                    
                 # try:
                 #     # init_int = 10
                 #     # while load_more_button:

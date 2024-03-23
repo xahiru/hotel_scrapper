@@ -48,9 +48,9 @@ class RatesSpiderSpider(scrapy.Spider):
 
     def parse(self, response, url):
         print('🚀 ==================================================================inside parse===============')
-        print("🚀 ~ response:", url)
         self.loop_count += 1
         print(f'🚀 ~ LOOP COUNT {self.loop_count}')
+        print(f"🚀 ~ URL for the Loop{self.loop_count}: {url}" )
         if url is None:
             return None
         print('🚀 ==================================================================before looping recursive===============')

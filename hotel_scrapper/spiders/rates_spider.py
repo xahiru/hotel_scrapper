@@ -50,8 +50,7 @@ class RatesSpiderSpider(scrapy.Spider):
         self.loop_count += 1
         print(f'🚀 ~ LOOP COUNT {self.loop_count}')
         print(f"🚀 ~ URL for the Loop{self.loop_count}: {url}" )
-        if url is None:
-            return None
+ 
         print('🚀 ==================================================================before looping recursive===============')
         try:
     
@@ -106,7 +105,7 @@ class RatesSpiderSpider(scrapy.Spider):
                 #     #         load_more_button = None
                 # except NoSuchElementException as e:
                 #     print(f"🚀 ~ load_more_button not found{e}")
-                # yield self.parse_new_hotel()
+                yield self.parse_new_hotel()
                 
             else:
                 print('🚀 ~ next_button Exists')
@@ -114,15 +113,13 @@ class RatesSpiderSpider(scrapy.Spider):
                 
                 if next_button.is_enabled():
                     print('🚀 ~ next_button is enabled')
-                    print("🚀 ~ current url after calling parse:", url)
                     next_button.click()
+                    print("🚀 ~ Button clicked:")
                     self.driver.implicitly_wait(10)
+                    print("🚀 ~ Wait done after clicked:")
                     url = self.driver.current_url
-                    print("🚀 ~ Updated url:", url)
-                    self.parse(response, url)
-                else:
-                    print('🚀 ~ next_button is not enabled')
-                    url = None
+                    print("🚀 ~ NEW URL:", url)
+                    yield scrapy.Request(url=url, callback=self.parse_hotel)
                  
         except:
             print(

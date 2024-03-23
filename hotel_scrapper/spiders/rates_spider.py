@@ -97,6 +97,7 @@ class RatesSpiderSpider(scrapy.Spider):
                     pass
             # yield self.parse_new_hotel()
             self.hello()
+            yield self.parse_new_hotel(self.driver)
                 # load the website
             #     # init_int = 10
             #     # while load_more_button:
@@ -122,14 +123,19 @@ class RatesSpiderSpider(scrapy.Spider):
             #     url = self.driver.current_url
             #     print("🚀 ~ NEW URL:", url)
             self.hello()
+            yield self.parse_new_hotel(self.driver)
+
+        # property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
                  
        
 
     def hello(self):
         print('🚀 ~ hello world')
-    def parse_new_hotel(self):
+        self.driver.implicitly_wait(5)
+    def parse_new_hotel(self, driver):
         # self.driver.implicitly_wait(2)
-        property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
+        print('🚀 ~ parse_new_hotel')
+        property_cards = driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
         print("🚀 ~ finding property_card===========>:")
         print(f'🚀 ~ property_card: {property_cards}')
         print(f'🚀 ~ property_card.count: {property_cards.count}')
@@ -193,7 +199,7 @@ class RatesSpiderSpider(scrapy.Spider):
                     
             except NoSuchElementException as e:
                 print(f'🚀 ~ error: {e}')
-                pass
+                yield 
         print('🚀 ==================================================================before looping recursive===============')
         # return h
 # # Old code ======

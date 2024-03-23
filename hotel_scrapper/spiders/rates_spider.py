@@ -56,7 +56,7 @@ class RatesSpiderSpider(scrapy.Spider):
         print('🚀 ==================================================================before looping recursive===============')
         try:
     
-            print("🚀 ~ finding next button===========>:")
+            
             self.driver.get(url)
             self.driver.implicitly_wait(15)
             if not self.dialog_removed:
@@ -70,7 +70,9 @@ class RatesSpiderSpider(scrapy.Spider):
                     pass
             
             try:
+                print("🚀 ~ finding next button===========>:")
                 next_button = self.driver.find_element(by=By.XPATH, value='//button[@aria-label="Next page"]')
+                print("🚀 ~ finding next button found inside try===========>:")
             except NoSuchElementException as e:
                 print("🚀 ~ next_button not found")
                 next_button = None

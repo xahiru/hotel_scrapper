@@ -39,7 +39,6 @@ class RatesSpiderSpider(scrapy.Spider):
         options = webdriver.ChromeOptions()
         options.add_experimental_option("detach", True)
         self.driver = webdriver.Chrome(options=options)
-        self.debug = False
         self.dialog_removed = False
         self.loop_count = 0
    
@@ -81,7 +80,6 @@ class RatesSpiderSpider(scrapy.Spider):
             if next_button is None:
                 print('🚀 ~ next_button is None')
                 while_count = 0
-                url = None
                 load_more_button = True
                 init_int = self.driver.execute_script("return document.body.scrollHeight")
                 delta_init = init_int
@@ -113,8 +111,7 @@ class RatesSpiderSpider(scrapy.Spider):
             else:
                 print('🚀 ~ next_button Exists')
                 print("🚀 ~ current url before calling parse:", url)
-                if self.debug:
-                    url = None
+                
                 if next_button.is_enabled():
                     print('🚀 ~ next_button is enabled')
                     print("🚀 ~ current url after calling parse:", url)

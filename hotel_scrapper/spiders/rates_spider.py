@@ -41,6 +41,7 @@ class RatesSpiderSpider(scrapy.Spider):
         self.driver = webdriver.Chrome(options=options)
         self.debug = False
         self.dialog_removed = False
+        self.loop_count = 0
    
     def start_requests(self):
         yield scrapy.Request(url=self.start_urls[0], callback=self.parse, cb_kwargs={'url': self.start_urls[0]})
@@ -48,6 +49,8 @@ class RatesSpiderSpider(scrapy.Spider):
     def parse(self, response, url):
         print('🚀 ==================================================================inside parse===============')
         print("🚀 ~ response:", url)
+        self.loop_count += 1
+        print(f'🚀 ~ LOOP COUNT {self.loop_count}')
         if url is None:
             return None
         print('🚀 ==================================================================before looping recursive===============')

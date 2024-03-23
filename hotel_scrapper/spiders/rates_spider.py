@@ -112,16 +112,15 @@ class RatesSpiderSpider(scrapy.Spider):
                 print('🚀 ~ next_button Exists')
                 print("🚀 ~ current url before calling parse:", url)
                 
-                if next_button.is_enabled():
-                    print('🚀 ~ next_button is enabled')
-                    next_button.click()
-                    print("🚀 ~ Button clicked:")
-                    self.driver.implicitly_wait(10)
-                    print("🚀 ~ Wait done after clicked:")
-                    url = self.driver.current_url
-                    print("🚀 ~ NEW URL:", url)
-                    # yield scrapy.Request(url=url, callback=self.parse_hotel)
-                    yield self.parse_new_hotel()
+                # if next_button.is_enabled():
+                #     print('🚀 ~ next_button is enabled')
+                #     next_button.click()
+                #     print("🚀 ~ Button clicked:")
+                #     self.driver.implicitly_wait(10)
+                #     print("🚀 ~ Wait done after clicked:")
+                #     url = self.driver.current_url
+                #     print("🚀 ~ NEW URL:", url)
+                yield self.parse_new_hotel()
                  
         except:
             print(

@@ -89,11 +89,14 @@ class RatesSpiderSpider(scrapy.Spider):
                     self.driver.implicitly_wait(5)
                     self.driver.execute_script(f"window.scrollTo(0, {delta_init});")
                     print('🚀 ~ searching for loading more')                    
-                    load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
-                    WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable(load_more_button)).click()
                     delta_init +=  init_int
+                    try:
+                        load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
+                        WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable(load_more_button)).click()
+                    except NoSuchElementException as e:
+                        pass
+                yield self.parse_new_hotel()
                     # load the website
-                # try:
                 #     # init_int = 10
                 #     # while load_more_button:
                 #     #     print('🚀 ~ load_more_button is found')
@@ -103,9 +106,7 @@ class RatesSpiderSpider(scrapy.Spider):
                 #     #     ActionChains(self.driver).scroll_from_origin(scroll_origin, 0, delta_init).perform()
                 #     #     if self.debug:
                 #     #         load_more_button = None
-                # except NoSuchElementException as e:
                 #     print(f"🚀 ~ load_more_button not found{e}")
-                yield self.parse_new_hotel()
                 
             else:
                 print('🚀 ~ next_button Exists')

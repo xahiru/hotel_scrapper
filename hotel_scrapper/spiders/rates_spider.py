@@ -109,7 +109,7 @@ class RatesSpiderSpider(scrapy.Spider):
                 # yield self.parse_new_hotel()
                 
             else:
-                print('🚀 ~ next_button is not None')
+                print('🚀 ~ next_button Exists')
                 print("🚀 ~ current url before calling parse:", url)
                 if self.debug:
                     url = None
@@ -117,8 +117,9 @@ class RatesSpiderSpider(scrapy.Spider):
                     print('🚀 ~ next_button is enabled')
                     print("🚀 ~ current url after calling parse:", url)
                     next_button.click()
-                    self.driver.implicitly_wait(2)
+                    self.driver.implicitly_wait(10)
                     url = self.driver.current_url
+                    print("🚀 ~ Updated url:", url)
                     self.parse(response, url)
                 else:
                     print('🚀 ~ next_button is not enabled')

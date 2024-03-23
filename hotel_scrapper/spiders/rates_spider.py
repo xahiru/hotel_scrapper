@@ -95,7 +95,8 @@ class RatesSpiderSpider(scrapy.Spider):
                 except NoSuchElementException as e:
                     load_more_button = False
                     pass
-            yield self.parse_new_hotel()
+            # yield self.parse_new_hotel()
+            self.hello()
                 # load the website
             #     # init_int = 10
             #     # while load_more_button:
@@ -120,10 +121,12 @@ class RatesSpiderSpider(scrapy.Spider):
             #     print("🚀 ~ Wait done after clicked:")
             #     url = self.driver.current_url
             #     print("🚀 ~ NEW URL:", url)
-            return self.parse_new_hotel()
+            self.hello()
                  
        
 
+    def hello(self):
+        print('🚀 ~ hello world')
     def parse_new_hotel(self):
         # self.driver.implicitly_wait(2)
         property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')

@@ -76,15 +76,18 @@ class RatesSpiderSpider(scrapy.Spider):
             if next_button is None:
                 print('🚀 ~ next_button is None')
                 url = None
+                load_more_button = True
+                init_int = 10
+                body_height = self.driver.execute_script("return document.body.scrollHeight")
                 while True:
                     # Scroll down to bottom
-                    self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                    self.driver.execute_script(f"window.scrollTo(0, {body_height});")
+                    load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
 
                     # load the website
                     self.driver.implicitly_wait(2)
                     print('🚀 ~ loading more')                    
                 # try:
-                #     load_more_button = self.driver.find_element(By.XPATH, "//span[contains(., 'Load more results')]")
                 #     # init_int = 10
                 #     # while load_more_button:
                 #     #     print('🚀 ~ load_more_button is found')

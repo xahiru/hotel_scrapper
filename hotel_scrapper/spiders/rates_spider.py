@@ -53,7 +53,6 @@ class RatesSpiderSpider(scrapy.Spider):
  
         print('🚀 ==================================================================before looping recursive===============')
         try:
-    
             
             self.driver.get(url)
             self.driver.implicitly_wait(15)
@@ -120,7 +119,8 @@ class RatesSpiderSpider(scrapy.Spider):
                     print("🚀 ~ Wait done after clicked:")
                     url = self.driver.current_url
                     print("🚀 ~ NEW URL:", url)
-                    yield scrapy.Request(url=url, callback=self.parse_hotel)
+                    # yield scrapy.Request(url=url, callback=self.parse_hotel)
+                    yield self.parse_new_hotel()
                  
         except:
             print(

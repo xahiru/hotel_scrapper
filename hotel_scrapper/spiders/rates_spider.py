@@ -34,13 +34,9 @@ class RatesSpiderSpider(scrapy.Spider):
         f"https://www.booking.com/searchresults.en-gb.html?ss=Maldives&ssne=Maldives&ssne_untouched=Maldives&label=gen173nr-1FCAEoggI46AdIM1gEaLQBiAEBmAEJuAEHyAEM2AEB6AEB-AELiAIBqAIDuAKcgfKuBsACAdICJDMzMDk1NWE2LTNlMGMtNDU1Ni1iYmE4LTBmNTZhMjY2NmRhNNgCBuACAQ&sid=d8f692159d780d393c7c6e9ed3d571a6&aid=304142&lang=en-gb&sb=1&src_elem=sb&src=searchresults&dest_id=129&dest_type=country&ac_position=0&ac_click_type=b&ac_langcode=en&ac_suggestion_list_length=5&search_selected=true&search_pageview_id=bf7c5dbc3b110061&ac_meta=GhBiZjdjNWRiYzNiMTEwMDYxIAAoATICZW46CE1hbGRpdmVzQABKAFAA&checkin={checkin}&checkout={checkout}&group_adults=2&no_rooms=1&group_children=0"
         ]
     
-    # Selenium
     def __init__(self):
         options = webdriver.ChromeOptions()
         options.add_experimental_option("detach", True)
-        # options.add_argument("--headless=new")
-        # options.add_argument("--start-maximized")
-        # options.add_experimental_option('excludeSwitches', ['disable-popup-blocking'])
         self.driver = webdriver.Chrome(options=options)
         self.dialog_removed = False
         self.loop_count = 0

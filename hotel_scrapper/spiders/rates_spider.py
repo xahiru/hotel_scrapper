@@ -39,10 +39,7 @@ class RatesSpiderSpider(scrapy.Spider):
         options = webdriver.ChromeOptions()
         # options.add_experimental_option("detach", True)
         options.add_argument("--headless=new")
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
-        options.add_argument("--window-size=1920x1080")
-        options.add_argument("start-maximised")
+        options.add_argument("--start-maximized")
         self.driver = webdriver.Chrome(options=options)
         self.dialog_removed = False
         self.loop_count = 0

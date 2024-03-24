@@ -255,4 +255,5 @@ class RatesSpiderSpider(scrapy.Spider):
                     # NOTE:Below should not be required as we're not relying on url but the next_button
                     # self.driver.get(url) Use this line if the new page is not loading
                     
-
+        
+        self.driver.close()

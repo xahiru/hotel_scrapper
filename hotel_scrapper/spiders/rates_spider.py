@@ -40,6 +40,7 @@ class RatesSpiderSpider(scrapy.Spider):
         # options.add_experimental_option("detach", True)
         options.add_argument("--headless=new")
         options.add_argument("--start-maximized")
+        options.add_experimental_option('excludeSwitches', ['disable-popup-blocking'])
         self.driver = webdriver.Chrome(options=options)
         self.dialog_removed = False
         self.loop_count = 0

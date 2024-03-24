@@ -249,9 +249,7 @@ class RatesSpiderSpider(scrapy.Spider):
                 url = self.driver.current_url
                 print("🚀 ~ NEW URL:", url)
 
-    def hello(self):
-        print('🚀 ~ hello world')
-        self.driver.implicitly_wait(5)
+
     def parse_new_hotel(self, driver):
         # self.driver.implicitly_wait(2)
         print('🚀 ~ parse_new_hotel')

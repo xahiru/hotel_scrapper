@@ -1,6 +1,5 @@
 import scrapy
 from hotel_scrapper.items import HotelItem
-# from scrapy.loader import ItemLoader
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver import Keys, ActionChains
@@ -8,11 +7,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.actions.wheel_input import ScrollOrigin
-
-
-
-
-
 
 from datetime import datetime, timedelta
 checinkin = datetime.now() + timedelta(days=14)

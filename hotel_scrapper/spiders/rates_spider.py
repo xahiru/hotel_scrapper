@@ -165,6 +165,7 @@ class RatesSpiderSpider(scrapy.Spider):
         else:
             print('🚀 ~ next_button Exists')
             print("🚀 ~ current url before calling parse:", url)
+            total_count = 0
             while next_button:
                 print('🚀 ~ parse_new_hotel')
                 property_cards = self.driver.find_elements(by=By.XPATH, value='//div[@data-testid="property-card"]')
@@ -173,8 +174,10 @@ class RatesSpiderSpider(scrapy.Spider):
                 print(f'🚀 ~ property_card.count: {property_cards.count}')
                 print(f'🚀 ~ property_card. length: {len(property_cards)}')
                 for idx in range(len(property_cards)):
+                    total_count += 1
                     print("🚀 ~ new property===========>:")
                     print(f"🚀 ~ MULTI PAGE===========>:with index: {idx}")
+                    print(f"🚀 ~ TOTOAL Property COUNT ===========>: {total_count}")
                     try:
                         
                         current_property = property_cards.pop()

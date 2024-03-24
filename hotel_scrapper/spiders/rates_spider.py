@@ -250,6 +250,7 @@ class RatesSpiderSpider(scrapy.Spider):
                     print("🚀 ~ Wait done after clicked:")
                     url = self.driver.current_url
                     print("🚀 ~ NEW URL:", url)
+                    # NOTE:Below should not be required as we're not relying on url but the next_button
                     # self.driver.get(url) Use this line if the new page is not loading
                     
 
